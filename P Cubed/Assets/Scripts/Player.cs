@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField]
-    private float walkSpeed = 3;
+    private Rigidbody2D rb;
+
+    [SerializeField] [Min (0)]
+    private float walkSpeed = 1;
 
     private Vector2 playerPosition;
     private Vector2 direction = Vector2.zero;
@@ -38,6 +40,8 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
+
         playerPosition = transform.position;
     }
 
@@ -69,14 +73,18 @@ public class Player : MonoBehaviour
         direction.Normalize();
 
         // Don't move if the player is stunned
-        if (!Stunned)
+        if (Stunned)
         {
-            velocity = direction * walkSpeed * Time.deltaTime;
-
-            playerPosition += velocity;
-
-            transform.position = playerPosition;
+            velocity = Vector2.zero;
         }
+
+        // Otherwise, move based on the inputted direction
+        else
+        {
+            velocity = direction * walkSpeed;
+        }
+
+        rb.velocity = velocity;
 
         // Tick down timers
         if (stunTimer > 0)
