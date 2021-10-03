@@ -100,4 +100,21 @@ public class Player : MonoBehaviour
             invulnerabilityTimer = Mathf.Max(0, invulnerabilityTimer);
         }
     }
+
+    /// <summary>
+    /// Stuns/hits the player if possible
+    /// </summary>
+    /// <returns>True if the player becomes stunned, false if not</returns>
+    public bool TakeDamage()
+    {
+        // If the player can't be hit, don't do anything and return false
+        if (Invulnerable) { return false; }
+
+        // Start the stun and invulnerability timers appropriately
+        stunTimer = stunDuration;
+        invulnerabilityTimer = invulnerabilityDuration;
+
+        // Return true since the player has been stunned
+        return true;
+    }
 }
