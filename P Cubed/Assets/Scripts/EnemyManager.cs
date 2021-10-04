@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
-    private Enemy[] enemies;
+    private Enemy[] enemies = new Enemy[0];
     private bool waveLife;
 
     //wave constructor for enemy waves WIP

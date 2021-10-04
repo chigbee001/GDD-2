@@ -12,6 +12,7 @@ public enum HitboxShape
 public class Card
 {
     //card stuff
+    private string name;
     private HitboxShape hitboxType;
     private Vector2 size;
     private float damage;
@@ -30,6 +31,7 @@ public class Card
     /// <summary>
     /// create a card object
     /// </summary>
+    /// <param name="name">name of card</param>
     /// <param name="hitboxType">used for both: targeted can only be a rectangle or a circle, skillshot can also be an ellipse</param>
     /// <param name="size">used for both: width and height of hitbox</param>
     /// <param name="damage">used for both: damage to deal</param>
@@ -39,8 +41,9 @@ public class Card
     /// <param name="effectSprite">used for both: sprite to show over hitbox</param>
     /// <param name="origin">used for skillshot: where skillshot should start when it is created</param>
     /// <param name="timeActive">used for skillshot: time hitbox should be active for</param>
-    public Card(HitboxShape hitboxType, Vector2 size, float damage, bool isSkillShot, bool isProjectile, float speed, Sprite effectSprite, Vector3 origin, float timeActive)
+    public Card(string name, HitboxShape hitboxType, Vector2 size, float damage, bool isSkillShot, bool isProjectile, float speed, Sprite effectSprite, Vector3 origin, float timeActive)
     {
+        this.name = name;
         this.hitboxType = hitboxType;
         this.size = size;
         this.damage = damage;
@@ -58,6 +61,7 @@ public class Card
     public void Activate(Vector3 mousePos)
     {
         active = true;
+        mousePos = new Vector3(mousePos.x, mousePos.y, 0);
 
         //skillshot attack that travels to the mouse position
         if (isSkillShot)
@@ -159,6 +163,11 @@ public class Card
 
     public bool Active
     {
-        get { return false; }
+        get { return active; }
+    }
+
+    public string Name
+    {
+        get { return name; }
     }
 }

@@ -92,7 +92,7 @@ public class Player : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && shootTimer <= 0)
         {
             // Shoots the bullet towards the cursor
-            ShootBullet();
+            //ShootBullet();
 
             // Starts the cooldown timer for shooting
             shootTimer = shootCooldown;

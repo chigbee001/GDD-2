@@ -78,8 +78,7 @@ public class PumpkinPatch : MonoBehaviour
     //check for enemy collision
     private void OnTriggerEnter2D(Collider2D collision) {
         if(collision.transform.tag == "enemy") {
-            //this is under the assumption that there will be some public function in Enemy that will return a float and destroy the enemy gameobject
-            //DecreaseHealth(collision.gameObject.GetComponent<Enemy>().Attack());
+            DecreaseHealth(collision.gameObject.GetComponent<Enemy>().Attack());
         }
     }
 }
