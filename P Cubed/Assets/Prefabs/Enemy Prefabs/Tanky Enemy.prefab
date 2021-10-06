@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1759940453680616113}
   - component: {fileID: 1759940453680616112}
   m_Layer: 0
-  m_Name: Enemy2
+  m_Name: Tanky Enemy
   m_TagString: Enemy
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0

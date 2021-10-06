@@ -45,20 +45,19 @@ public class Spawner : MonoBehaviour
     IEnumerator WaveSpawn()
     {
         Wave wave = waves[waveNumber];
-        for(int i = 0; i < wave.enemyTypes.Length; i++)
+        for(int i = 0; i < wave.enemyRanks.Length; i++)
         {
-            
-            if (wave.enemyNumbers.Length - 1 >= i)
+            if (wave.enemyRanks[i].enemyNumbers > 0)
             {                
-                for (int j = 0; j < wave.enemyNumbers[i]; j++)
+                for (int j = 0; j < wave.enemyRanks[i].enemyNumbers; j++)
                 {
-                    SpawnEnemy(wave.enemyTypes[i]);
+                    SpawnEnemy(wave.enemyRanks[i].enemyType);
                     yield return new WaitForSeconds(1 * wave.spawnRate);
                 }
             }
             else
             { 
-                SpawnEnemy(wave.enemyTypes[i]);
+                SpawnEnemy(wave.enemyRanks[i].enemyType);
                 yield return new WaitForSeconds(1 * wave.spawnRate);
             }
         }        
