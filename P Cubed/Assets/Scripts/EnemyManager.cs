@@ -5,10 +5,9 @@ using UnityEngine;
 public class EnemyManager : MonoBehaviour
 {
     private Enemy[] enemies = new Enemy[0];
-    private bool waveLife;
-
+    private bool waveLife;    
     //wave constructor for enemy waves WIP
-	void Update()
+    void Update()
     {
         foreach(Enemy nme in enemies)
         {
