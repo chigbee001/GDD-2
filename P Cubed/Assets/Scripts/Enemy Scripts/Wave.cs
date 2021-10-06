@@ -7,10 +7,7 @@ public class Wave
 {    
     public EnemyRank[] enemyRanks;
     public float spawnRate;
-
-    void Awake()
-    {
-    }
+    
 
    
 
