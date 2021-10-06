@@ -20,7 +20,6 @@ public class Card
     private bool isProjectile;
     private float speed;
     private Sprite effectSprite;
-    private Vector3 origin;
     private float timeActive;
 
     //internal stuff
@@ -41,8 +40,8 @@ public class Card
     /// <param name="speed">used for skillshot: speed it should travel at</param>
     /// <param name="effectSprite">used for both: sprite to show over hitbox</param>
     /// <param name="origin">used for skillshot: where skillshot should start when it is created</param>
-    /// <param name="timeActive">used for skillshot: time hitbox should be active for</param>
-    public Card(string name, HitboxShape hitboxType, Vector2 size, float damage, bool isSkillShot, bool isProjectile, float speed, Sprite effectSprite, Vector3 origin, float timeActive)
+    /// <param name="timeActive">used for skillshot: time hitbox should be active for, used for both: time before next attack can be used</param>
+    public Card(string name, HitboxShape hitboxType, Vector2 size, float damage, bool isSkillShot, bool isProjectile, float speed, Sprite effectSprite, float timeActive)
     {
         this.name = name;
         this.hitboxType = hitboxType;
@@ -52,7 +51,6 @@ public class Card
         this.isProjectile = isProjectile;
         this.speed = speed;
         this.effectSprite = effectSprite;
-        this.origin = origin;
         this.timeActive = timeActive;
 
         active = false;
@@ -60,7 +58,12 @@ public class Card
         enemyLayer = LayerMask.NameToLayer("enemy");
     }
 
-    public void Activate(Vector3 mousePos)
+    /// <summary>
+    /// active card, spawn hitbox and display effect
+    /// </summary>
+    /// <param name="mousePos">mouse position in world</param>
+    /// <param name="origin">if skillshot, where should it start</param>
+    public void Activate(Vector3 mousePos, Vector3 origin)
     {
         active = true;
         mousePos = new Vector3(mousePos.x, mousePos.y, 0);
@@ -149,10 +152,13 @@ public class Card
             currentObj.transform.localScale = new Vector3(size.x, size.y, 1);
 
             //set timer
-            timeActiveCounter = 1;
+            timeActiveCounter = timeActive;
         }
     }
 
+    /// <summary>
+    /// update card gameobject every time it is called. counts down time active and destroys itself at the end
+    /// </summary>
     public void Update()
     {
         timeActiveCounter -= Time.deltaTime;
@@ -168,11 +174,17 @@ public class Card
         }
     }
 
+    /// <summary>
+    /// is the card active
+    /// </summary>
     public bool Active
     {
         get { return active; }
     }
 
+    /// <summary>
+    /// name of card
+    /// </summary>
     public string Name
     {
         get { return name; }

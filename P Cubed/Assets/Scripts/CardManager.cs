@@ -15,11 +15,11 @@ public class CardManager : MonoBehaviour
     void Start()
     {
         //create cards
-        cards.Enqueue(new Card("rupture", HitboxShape.Rectangle, new Vector2(2, 2), 3, false, false, 0, cardEffects[0], Vector3.zero, 1));
-        cards.Enqueue(new Card("fireball", HitboxShape.Ellipse, new Vector2(.75f, .5f), 3, true, true, 10, cardEffects[1], transform.position, 1));
-        cards.Enqueue(new Card("meteor", HitboxShape.Circle, new Vector2(3, 3), 2, false, false, 0, cardEffects[2], Vector3.zero, 1));
-        cards.Enqueue(new Card("lightning", HitboxShape.Rectangle, new Vector2(3, .25f), 5, true, true, 15, cardEffects[3], transform.position, 1));
-        cards.Enqueue(new Card("sun disc", HitboxShape.Circle, new Vector2(1, 1), 6, true, true, 8, cardEffects[4], transform.position, 1));
+        cards.Enqueue(new Card("Rupture", HitboxShape.Rectangle, new Vector2(2, 2), 2, false, false, 0, cardEffects[0], .5f));
+        cards.Enqueue(new Card("Fireball", HitboxShape.Ellipse, new Vector2(.75f, .5f), 3, true, true, 10, cardEffects[1], .75f));
+        cards.Enqueue(new Card("Meteor", HitboxShape.Circle, new Vector2(3, 3), 4, false, false, 0, cardEffects[2], 1.5f));
+        cards.Enqueue(new Card("Lightning", HitboxShape.Rectangle, new Vector2(3, .25f), 5, true, true, 15, cardEffects[3], .5f));
+        cards.Enqueue(new Card("Sun Disc", HitboxShape.Circle, new Vector2(1, 1), 6, true, true, 8, cardEffects[4], .75f));
 
         //set up card display
         Card[] cardArr = cards.ToArray();
@@ -37,7 +37,7 @@ public class CardManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && cards.Count > 0 && activeCard == null)
         {
             //activate card
-            cards.Peek().Activate(GetMousePosInWorld(Input.mousePosition));
+            cards.Peek().Activate(GetMousePosInWorld(Input.mousePosition), transform.position);
 
             //remove activated card from top, put it on the bottom
             activeCard = cards.Dequeue();
@@ -53,7 +53,7 @@ public class CardManager : MonoBehaviour
             Card firstCard = cards.Dequeue();
 
             //activate card
-            cards.Peek().Activate(GetMousePosInWorld(Input.mousePosition));
+            cards.Peek().Activate(GetMousePosInWorld(Input.mousePosition), transform.position);
 
             activeCard = cards.Dequeue();
 
