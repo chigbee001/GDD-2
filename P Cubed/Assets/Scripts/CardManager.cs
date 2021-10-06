@@ -15,18 +15,18 @@ public class CardManager : MonoBehaviour
     void Start()
     {
         //create cards
-        cards.Enqueue(new Card("rupture 1", HitboxShape.Circle, new Vector2(2, 2), 3, false, false, 0, cardEffects[0], Vector3.zero, 1));
-        cards.Enqueue(new Card("rupture 2", HitboxShape.Circle, new Vector2(2, 2), 3, false, false, 0, cardEffects[1], Vector3.zero, 1));
-        cards.Enqueue(new Card("rupture 3", HitboxShape.Circle, new Vector2(2, 2), 3, false, false, 0, cardEffects[2], Vector3.zero, 1));
-        cards.Enqueue(new Card("rupture 4", HitboxShape.Circle, new Vector2(2, 2), 3, false, false, 0, cardEffects[3], Vector3.zero, 1));
-        cards.Enqueue(new Card("rupture 5", HitboxShape.Circle, new Vector2(2, 2), 3, false, false, 0, cardEffects[4], Vector3.zero, 1));
+        cards.Enqueue(new Card("rupture", HitboxShape.Rectangle, new Vector2(2, 2), 3, false, false, 0, cardEffects[0], Vector3.zero, 1));
+        cards.Enqueue(new Card("fireball", HitboxShape.Ellipse, new Vector2(.75f, .5f), 3, true, true, 10, cardEffects[1], transform.position, 1));
+        cards.Enqueue(new Card("meteor", HitboxShape.Circle, new Vector2(3, 3), 2, false, false, 0, cardEffects[2], Vector3.zero, 1));
+        cards.Enqueue(new Card("lightning", HitboxShape.Rectangle, new Vector2(3, .25f), 5, true, true, 15, cardEffects[3], transform.position, 1));
+        cards.Enqueue(new Card("sun disc", HitboxShape.Circle, new Vector2(1, 1), 6, true, true, 8, cardEffects[4], transform.position, 1));
 
         //set up card display
         Card[] cardArr = cards.ToArray();
         for(int i = 0; i < cardArr.Length; i++)
         {
             GameObject newCardUI = Instantiate(cardUIPrefab, cardDisplay);
-            newCardUI.GetComponent<RectTransform>().localPosition = new Vector3(0, (cardArr.Length - 1 - i) * -110, 0);
+            newCardUI.GetComponent<RectTransform>().localPosition = new Vector3(0, (cardArr.Length - 1 - i) * -90, 0);
             newCardUI.transform.GetChild(0).GetComponent<Text>().text = cardArr[i].Name;
         }
     }
@@ -114,7 +114,7 @@ public class CardManager : MonoBehaviour
             //}
             
             GameObject newCardUI = Instantiate(cardUIPrefab, cardDisplay);
-            newCardUI.GetComponent<RectTransform>().localPosition = new Vector3(0, (cardArr.Length - 1 - i) * -110, 0);
+            newCardUI.GetComponent<RectTransform>().localPosition = new Vector3(0, (cardArr.Length - 1 - i) * -90, 0);
             newCardUI.transform.GetChild(0).GetComponent<Text>().text = cardArr[i].Name;
         }
     }

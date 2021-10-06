@@ -27,6 +27,7 @@ public class Card
     private bool active;
     private float timeActiveCounter;
     private GameObject currentObj;
+    private LayerMask enemyLayer;
 
     /// <summary>
     /// create a card object
@@ -56,6 +57,7 @@ public class Card
 
         active = false;
         timeActiveCounter = 0;
+        enemyLayer = LayerMask.NameToLayer("enemy");
     }
 
     public void Activate(Vector3 mousePos)
@@ -71,6 +73,7 @@ public class Card
             currentObj.transform.localScale = new Vector3(size.x, size.y, 1);
             currentObj.transform.position = origin;
             currentObj.AddComponent<SpriteRenderer>().sprite = effectSprite;
+            currentObj.tag = "pBullet";
 
             //add collider
             switch (hitboxType)
@@ -98,11 +101,9 @@ public class Card
                 currentObj.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
             }
 
-            //if it is a projectile give it speed and projectile script
-            if (isProjectile)
-            {
-                //currentObj.AddComponent<projectile>().SetValues(direction, speed);
-            }
+            Projectile proj = currentObj.AddComponent<Projectile>();
+            proj.direction = direction;
+            proj.speed = speed;
 
             //set timer
             timeActiveCounter = timeActive;
@@ -132,7 +133,11 @@ public class Card
             //damage enemies
             foreach (Collider2D enemy in enemiesToDamage)
             {
-                //damage enemies
+                //damage enemies (eventually enemies will be able to take damage but for now we have this)
+                if (enemy.tag == "Enemy")
+                {
+                    GameObject.Destroy(enemy.gameObject);
+                }
             }
 
             //create effect object

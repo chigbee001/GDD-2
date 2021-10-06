@@ -548,7 +548,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 210, y: -60}
+  m_AnchoredPosition: {x: 170, y: -60}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &808444287
@@ -1447,10 +1447,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardEffects:
+  - {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
   - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
-  - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
-  - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
+  - {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   - {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
   cardDisplay: {fileID: 726311608}
   cardUIPrefab: {fileID: 1593988421478005456, guid: aa0ce9b9adbcf1442b1179a8082033b3, type: 3}
@@ -1548,6 +1548,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1609432399}
     m_Modifications:
+    - target: {fileID: 341125803797249091, guid: a2c78422b9f42834e89095db872de6ad, type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 341125803797249102, guid: a2c78422b9f42834e89095db872de6ad, type: 3}
       propertyPath: m_RootOrder
       value: 0

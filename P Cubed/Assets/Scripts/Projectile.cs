@@ -36,16 +36,16 @@ public class Projectile : MonoBehaviour
             case "pBullet":
                 if(other.tag == "Enemy")
                 {
-                    Destroy(other.gameObject);   
+                    Destroy(other.gameObject);
+                    Destroy(gameObject);
                 }
-                Destroy(gameObject);
                 break;
             case "eBullet":
                 if(other.tag == "Player")
                 {
                     player.TakeDamage();
+                    Destroy(gameObject);
                 }
-                Destroy(gameObject);
                 break;
             default:
                 Debug.Log("PUT THE TAG IN THE BULLET PLS");
