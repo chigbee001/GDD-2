@@ -67,7 +67,7 @@ public class PumpkinPatch : MonoBehaviour
         healthText.text = amount.ToString("F1");
     }
 
-    //proprty for isAlive
+    //property for isAlive
     //to be used by the game manager to end the game
     //to be used by the spawn manager to stop spawning enemies that attack this patch
     public bool IsAlive

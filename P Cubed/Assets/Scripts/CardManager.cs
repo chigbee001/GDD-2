@@ -10,6 +10,7 @@ public class CardManager : MonoBehaviour
     public Sprite[] cardEffects = new Sprite[5];
     public Transform cardDisplay;
     public GameObject cardUIPrefab;
+    private GameManager gameManager;
 
     // Start is called before the first frame update
     void Start()
@@ -29,11 +30,19 @@ public class CardManager : MonoBehaviour
             newCardUI.GetComponent<RectTransform>().localPosition = new Vector3(0, (cardArr.Length - 1 - i) * -90, 0);
             newCardUI.transform.GetChild(0).GetComponent<Text>().text = cardArr[i].Name;
         }
+
+        //get reference to gamemanager
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(gameManager.IsPaused) 
+        {
+            return;
+        }
+
         if (Input.GetMouseButtonDown(0) && cards.Count > 0 && activeCard == null)
         {
             //activate card

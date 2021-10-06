@@ -8,8 +8,6 @@ public class GameManager : MonoBehaviour
 
     public GameObject pauseScreen;
 
-
-
     // Start is called before the first frame update
     void Start()
     {
@@ -39,14 +37,24 @@ public class GameManager : MonoBehaviour
         {
             paused = false;
             pauseScreen.SetActive(false);
+            Time.timeScale = 1;
 
         }
         else
         {
             paused = true;
             pauseScreen.SetActive(true);
+            Time.timeScale = 0;
         }
 
 
+    }
+
+    /// <summary>
+    /// property for if the game is paused
+    /// </summary>
+    public bool IsPaused
+    {
+        get { return paused; }
     }
 }
