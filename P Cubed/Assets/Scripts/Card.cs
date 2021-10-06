@@ -136,7 +136,9 @@ public class Card
                 //damage enemies (eventually enemies will be able to take damage but for now we have this)
                 if (enemy.tag == "Enemy")
                 {
-                    GameObject.Destroy(enemy.gameObject);
+                    //edited to damage enemy otherwise enemies will no longer spawn due to how enemies are handled
+                    enemy.GetComponentInParent<Enemy>().TakeDamage(1);
+                    //GameObject.Destroy(enemy.gameObject);
                 }
             }
 

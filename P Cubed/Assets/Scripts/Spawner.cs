@@ -57,7 +57,7 @@ public class Spawner : MonoBehaviour
                 }
             }
             else
-            {
+            { 
                 SpawnEnemy(wave.enemyTypes[i]);
                 yield return new WaitForSeconds(1 * wave.spawnRate);
             }

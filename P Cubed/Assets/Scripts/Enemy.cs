@@ -6,7 +6,7 @@ public class Enemy : MonoBehaviour
 {
     private Rigidbody2D rigidBody;
     public float moveSpeed;
-    private int health;
+    public int health;
     public int pathNumber;
     private int pathIndex = 0;
     private Transform nextStep;
@@ -24,7 +24,6 @@ public class Enemy : MonoBehaviour
         rigidBody = this.GetComponent<Rigidbody2D>();
         Pathing.SetPath(pathNumber);
         nextStep = Pathing.pathPoints[0];
-        health = 1;
     }
 
     //currently just moves enemies along the path 
@@ -48,6 +47,15 @@ public class Enemy : MonoBehaviour
         }
         pathIndex++;
         nextStep = Pathing.pathPoints[pathIndex];
+    }
+
+    public void TakeDamage(int damageTaken)
+    {
+        health -= damageTaken;
+        if(health <= 0)
+        {
+            Die();
+        }
     }
 
     //enemy destroyed generic float of 1 returned for once damage is hooked up
