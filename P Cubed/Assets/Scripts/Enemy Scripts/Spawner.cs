@@ -18,6 +18,7 @@ public class Spawner : MonoBehaviour
     {
         wavePattern = 0;
         waveNumber = 0;
+        EnemiesAlive = 0;
     }
 
     private void Update()
