@@ -7,7 +7,7 @@ public class PumpkinPatch : MonoBehaviour
 {
     //health variables
     private float health;
-    private float maxHealth;
+    public float maxHealth;
     private bool isAlive;
 
     //health bar
@@ -20,8 +20,7 @@ public class PumpkinPatch : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        maxHealth = 10;
-        health = 5;
+        health = maxHealth;
         isAlive = true;
 
         //health bar setup

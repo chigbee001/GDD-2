@@ -860,16 +860,16 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -8.400706, y: 6.0013967}
-      - {x: -8.385242, y: -5.946393}
-      - {x: -8.692643, y: -6.152342}
-      - {x: -8.653982, y: 6.1916623}
-      - {x: 8.541512, y: 6.309049}
-      - {x: 8.567315, y: -6.1238527}
-      - {x: -8.687115, y: -6.176011}
-      - {x: -8.40255, y: -6.004264}
-      - {x: 8.404225, y: -5.980684}
-      - {x: 8.383892, y: 5.943487}
+    - - {x: -9.208988, y: 7.0084887}
+      - {x: -9.135242, y: -6.946393}
+      - {x: -9.442643, y: -7.152342}
+      - {x: -9.453419, y: 7.3792276}
+      - {x: 8.791512, y: 7.309049}
+      - {x: 8.817315, y: -7.3738527}
+      - {x: -9.496074, y: -7.239662}
+      - {x: -9.15255, y: -7.004264}
+      - {x: 8.654225, y: -6.980684}
+      - {x: 8.633892, y: 6.943487}
 --- !u!212 &713168580
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2825,6 +2825,26 @@ PrefabInstance:
     - target: {fileID: 909280187970398292, guid: 41a547fea14909747b326c50a68f46a5, type: 3}
       propertyPath: m_Name
       value: pumpkin patch
+      objectReference: {fileID: 0}
+    - target: {fileID: 909280187970398293, guid: 41a547fea14909747b326c50a68f46a5, type: 3}
+      propertyPath: maxHealth
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 909280187970398294, guid: 41a547fea14909747b326c50a68f46a5, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 738fba686f78bb0419436470e74f0832, type: 3}
+    - target: {fileID: 909280187970398294, guid: 41a547fea14909747b326c50a68f46a5, type: 3}
+      propertyPath: m_Color.b
+      value: 0.6933962
+      objectReference: {fileID: 0}
+    - target: {fileID: 909280187970398294, guid: 41a547fea14909747b326c50a68f46a5, type: 3}
+      propertyPath: m_Color.g
+      value: 0.81673557
+      objectReference: {fileID: 0}
+    - target: {fileID: 909280187970398294, guid: 41a547fea14909747b326c50a68f46a5, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 909280187970398295, guid: 41a547fea14909747b326c50a68f46a5, type: 3}
       propertyPath: m_RootOrder

@@ -28,15 +28,17 @@ public class GameManager : MonoBehaviour
         // Game stuff to happen here
         if (!paused)
         {
+
         }
 
         // If pumpkin dead show game over screen
-        if(Input.GetKeyDown(KeyCode.I))
-        // if (!paused && !PumpkinsAlive(pumpkinPatch))
+        // if(Input.GetKeyDown(KeyCode.I))
+        if (!paused && !PumpkinsAlive(pumpkinPatch))
         {
             loseScreen.SetActive(true);
             paused = true;
             Time.timeScale = 0;
+            Debug.Log("HERE");
         }
     }
 
@@ -59,7 +61,7 @@ public class GameManager : MonoBehaviour
 
     }
     /// <summary>
-    /// Checks all the gameobjects to see if they are alive
+    /// Checks all the pumpkins to see if alive. Returns false if all dead
     /// </summary>
     public bool PumpkinsAlive(GameObject[] pumpkins)
     {
@@ -80,7 +82,6 @@ public class GameManager : MonoBehaviour
     {
         loseScreen.SetActive(false);
         Time.timeScale = 1;
-        paused = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
     }
