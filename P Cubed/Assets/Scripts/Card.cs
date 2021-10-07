@@ -121,7 +121,7 @@ public class Card
             {
                 case HitboxShape.Circle:
                 case HitboxShape.Ellipse:
-                    enemiesToDamage = Physics2D.OverlapCircleAll(mousePos, size.x);
+                    enemiesToDamage = Physics2D.OverlapCircleAll(mousePos, size.x / 2);
                     break;
 
                 case HitboxShape.Rectangle:
