@@ -11,6 +11,8 @@ public class Spawner : MonoBehaviour
     public float waveTimer;
     public float timerReset;
     public static int EnemiesAlive;
+    public bool waveAlive;
+    private bool waveSpawned;
 
 
     //currently WIP this class will be used to control spawners to allow for waves to come from seperate spawn points with similar or different pathings
@@ -19,15 +21,22 @@ public class Spawner : MonoBehaviour
         wavePattern = 0;
         waveNumber = 0;
         EnemiesAlive = 0;
+        waveAlive = false;
+        waveSpawned = false;
     }
 
     private void Update()
     {
+        if(EnemiesAlive == 0 && waveSpawned)
+        {
+            waveAlive = false;
+        }
+
         if(EnemiesAlive > 0)
         {
             return;
         }
-        if (waveTimer <= 0f)
+        if (waveTimer <= 0f || !waveAlive)
         {
             
             StartCoroutine(WaveSpawn());
@@ -45,6 +54,8 @@ public class Spawner : MonoBehaviour
     /// <returns></returns>
     IEnumerator WaveSpawn()
     {
+        waveSpawned = false;
+        waveAlive = true;
         Wave wave = waves[waveNumber];
         for(int i = 0; i < wave.enemyRanks.Length; i++)
         {
@@ -78,6 +89,7 @@ public class Spawner : MonoBehaviour
         {
             waveNumber = 0;
         }
+        waveSpawned = true;
     }
 
     void SpawnEnemy(GameObject enemy)
