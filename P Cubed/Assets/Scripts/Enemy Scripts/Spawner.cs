@@ -32,7 +32,7 @@ public class Spawner : MonoBehaviour
             waveAlive = false;
         }
 
-        if(EnemiesAlive > 0)
+        if(EnemiesAlive > 0 || waveAlive)
         {
             return;
         }
