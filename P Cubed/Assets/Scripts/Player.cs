@@ -20,10 +20,6 @@ public class Player : MonoBehaviour
     private float invulnerabilityDuration = 1.5f;
     private float invulnerabilityTimer = 0;
 
-    [SerializeField] [Min(0)]
-    private float shootCooldown = 0.2f;
-    private float shootTimer = 0;
-
     public bool Stunned
     {
         get
@@ -88,15 +84,8 @@ public class Player : MonoBehaviour
         // Apply velocity changes
         rb.velocity = velocity;
 
-        // Shoot bullets when the player left clicks
-        if (Input.GetMouseButtonDown(0) && shootTimer <= 0)
-        {
-            // Shoots the bullet towards the cursor
-            //ShootBullet();
-
-            // Starts the cooldown timer for shooting
-            shootTimer = shootCooldown;
-        }
+        // Applies animation effects based on whether the player is stunned or invulnerable
+        Flicker();
 
         // Tick down timers
         if (stunTimer > 0)
@@ -108,11 +97,6 @@ public class Player : MonoBehaviour
         {
             invulnerabilityTimer -= Time.deltaTime;
             invulnerabilityTimer = Mathf.Max(0, invulnerabilityTimer);
-        }
-        if (shootTimer > 0)
-        {
-            shootTimer -= Time.deltaTime;
-            shootTimer = Mathf.Max(0, shootTimer);
         }
     }
 
@@ -134,25 +118,30 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// INCOMPLETE! Instantiates a bullet at the player's position moving towards the cursor
+    /// Changes the player's sprite color to visualize the fact that they're stunned or invulnerable.
     /// </summary>
-    private void ShootBullet()
+    private void Flicker()
     {
-        Vector2 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
 
-        // TODO: INSTANTIATE A BULLET HERE
-        Vector2 bulletPosition = transform.position;
-        Vector2 bulletVelocity = Vector2.zero; // Placeholder for the actual bullet object
-        float bulletSpeed = 10;
-
-        // Calculate the direction the bullet should move based on the player's position and the cursor's position
-        Vector2 bulletDirection = mouseWorldPos - (Vector2)transform.position;
-        bulletDirection.Normalize();
-
-        // Apply that direction and speed to the bullet
-        bulletVelocity = bulletDirection * bulletSpeed;
-
-        // Just to test that it's working
-        Debug.Log("Bullet shot! Direction = " + bulletDirection + ", Velocity = " + bulletVelocity + ", Position = " + bulletPosition);
+        if (Stunned)
+        {
+            sprite.color = Color.red;
+        }
+        else if (Invulnerable)
+        {
+            if (invulnerabilityTimer % 0.16f > 0.08f)
+            {
+                sprite.color = Color.white;
+            }
+            else
+            {
+                sprite.color = Color.grey;
+            }
+        }
+        else
+        {
+            sprite.color = Color.white;
+        }
     }
 }
