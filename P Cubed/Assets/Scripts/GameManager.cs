@@ -6,6 +6,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public bool paused;
+    public static int currentLevel;
     public GameObject pauseScreen;
     public GameObject loseScreen;
     public GameObject[] pumpkinPatch;
@@ -14,6 +15,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         paused = false;
+        currentLevel = 0;
     }
 
     // Update is called once per frame

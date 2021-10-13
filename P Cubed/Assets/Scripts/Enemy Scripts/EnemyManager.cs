@@ -4,33 +4,34 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
-    private Enemy[] enemies = new Enemy[0];
-    private bool waveLife;    
-    //wave constructor for enemy waves WIP
-    void Update()
+    private int pointsToSpend;
+    private bool costsExceedPoints;
+    public Enemy[] enemyTypes;
+    public static int EnemiesAlive;
+
+    private void Start()
     {
-        foreach(Enemy nme in enemies)
-        {
-        }
-        
+        EnemiesAlive = 0;
     }
-    /// <summary>
-    /// Spawns a new enemy wave currently taking in a level parameter to set number of enemies in wave
-    /// </summary>
-    /// <param name="level"></param>
-    void SpawnWave(int level)
+
+    //wave constructor for enemy waves WIP
+
+
+    public Wave CreateWave(int currentLvl, int pumpkinsAlive)
     {
-        waveLife = true;
-        enemies = new Enemy[level];
-        for(int i = 0; i < level; i++)
-        {
-            enemies[i] = new Enemy(1, 1);
-        }
-        foreach(Enemy nme in enemies)
+        pointsToSpend = currentLvl * 10;
+        costsExceedPoints = false;
+
+        while(pointsToSpend > 0 && !costsExceedPoints)
         {
 
         }
+
+
+        Debug.Log("Something went wrong with Manager wave Creation");
+        return null;
     }
+
 
 
 }

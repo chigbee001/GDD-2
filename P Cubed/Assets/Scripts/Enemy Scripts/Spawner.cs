@@ -10,7 +10,6 @@ public class Spawner : MonoBehaviour
     public Transform spawnPoint;
     public float waveTimer;
     public float timerReset;
-    public static int EnemiesAlive;
     public bool waveAlive;
     private bool waveSpawned;
 
@@ -20,25 +19,24 @@ public class Spawner : MonoBehaviour
     {
         wavePattern = 0;
         waveNumber = 0;
-        EnemiesAlive = 0;
         waveAlive = false;
         waveSpawned = false;
     }
 
     private void Update()
     {
-        if(EnemiesAlive == 0 && waveSpawned)
+        if(EnemyManager.EnemiesAlive == 0 && waveSpawned)
         {
             waveAlive = false;
         }
 
-        if(EnemiesAlive > 0 || waveAlive)
+        if(EnemyManager.EnemiesAlive > 0 || waveAlive)
         {
             return;
         }
         if (waveTimer <= 0f || !waveAlive)
         {
-            
+            GameManager.currentLevel += 1;
             StartCoroutine(WaveSpawn());
             waveTimer = timerReset;
             return;
@@ -99,7 +97,7 @@ public class Spawner : MonoBehaviour
         thisEnemy.pathNumber = wavePattern;        
         thisEnemy = Instantiate(thisEnemy, spawnPoint);
         thisEnemy.transform.parent = this.transform.GetChild(1);
-        EnemiesAlive++;
+        EnemyManager.EnemiesAlive++;
 
     }
 }

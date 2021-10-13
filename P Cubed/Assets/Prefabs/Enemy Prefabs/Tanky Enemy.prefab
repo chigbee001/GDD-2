@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1759940453680616126}
   - component: {fileID: 1759940453680616113}
   - component: {fileID: 1759940453680616112}
+  - component: {fileID: 5143099569845662470}
   m_Layer: 0
   m_Name: Tanky Enemy
   m_TagString: Enemy
@@ -147,3 +148,24 @@ MonoBehaviour:
   moveSpeed: 1
   health: 2
   pathNumber: 0
+  tankEnemy: 0
+  shooterEnemy: 0
+  pursuitEnemy: 0
+  spawnCost: 0
+  spawnWeightedValue: 0
+  groupSpawnDiscount: 0
+--- !u!114 &5143099569845662470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759940453680616114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8531178973e87374683b641828a18d23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnCost: 0
+  spawnWeightedValue: 0
+  groupSpawnDiscount: 0

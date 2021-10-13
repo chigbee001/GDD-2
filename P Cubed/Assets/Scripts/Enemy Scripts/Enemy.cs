@@ -6,13 +6,17 @@ public class Enemy : MonoBehaviour
 {
     private Rigidbody2D rigidBody;
     public float moveSpeed;
-    public int health;
+    public float health;
     public int pathNumber;
     private int pathIndex = 0;
     private Transform nextStep;
+    public bool tankEnemy;
+    public bool shooterEnemy;
+    public bool pursuitEnemy;
+    
 
-    //enemy constructor for certain testing purposes
-    public Enemy(float moveSpeed, int health)
+    //enemy constructor for testing purposes
+    public Enemy(float moveSpeed, float health)
     {
         this.moveSpeed = moveSpeed;
         this.health = health;
@@ -29,11 +33,18 @@ public class Enemy : MonoBehaviour
     //currently just moves enemies along the path 
     private void Update()
     {
-        Vector2 movement = nextStep.position - transform.position;
-        transform.Translate(movement.normalized * moveSpeed * Time.deltaTime, Space.World);
-        if (Vector2.Distance(transform.position, nextStep.position) <= .2f)
+        if (!pursuitEnemy)
         {
-            GetNextStep();
+            Vector2 movement = nextStep.position - transform.position;
+            transform.Translate(movement.normalized * moveSpeed * Time.deltaTime, Space.World);
+            if (Vector2.Distance(transform.position, nextStep.position) <= .2f)
+            {
+                GetNextStep();
+            }
+        }
+        else
+        {
+            //pursuit enemies will move towards the player and stun player then die upon contact
         }
     }
 
@@ -51,7 +62,14 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(int damageTaken)
     {
-        health -= damageTaken;
+        if (tankEnemy)
+        {
+            health -= .5f * damageTaken;
+        }
+        else
+        {
+            health -= damageTaken;
+        }
         if(health <= 0)
         {
             Die();
@@ -67,7 +85,7 @@ public class Enemy : MonoBehaviour
 
     public void Die()
     {
-        Spawner.EnemiesAlive--;
+        EnemyManager.EnemiesAlive--;
         Destroy(gameObject);
     }
 
