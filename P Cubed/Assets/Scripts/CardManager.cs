@@ -6,22 +6,35 @@ using UnityEngine.UI;
 public class CardManager : MonoBehaviour
 {
     private Queue<Card> cards = new Queue<Card>();
-    private Card activeCard = null;
+    private List<Card> activeCards = new List<Card>();
     public Sprite[] cardEffects = new Sprite[5];
     public Transform cardDisplay;
     public GameObject cardUIPrefab;
     private GameManager gameManager;
     private float cardUIOffset;
 
+    //mana
+    private int totalMana = 10; //max mana
+    private float manaGainRate = 1; //1 mana/second
+    private float currentMana;
+    //mana bar
+    public Transform manaDisplayParent;
+    private Image manaBar;
+    private Image barBackground;
+    private Text manaText;
+    private float barFullSize;
+    private float barHeight;
+    private float manaBarFlashTimer = 0;
+
     // Start is called before the first frame update
     void Start()
     {
         //create cards
-        cards.Enqueue(new Card("Rupture", HitboxShape.Rectangle, new Vector2(2, 2), 2, false, false, 0, cardEffects[0], .5f));
-        cards.Enqueue(new Card("Fireball", HitboxShape.Ellipse, new Vector2(.75f, .5f), 3, true, true, 10, cardEffects[1], .75f));
-        cards.Enqueue(new Card("Meteor", HitboxShape.Circle, new Vector2(4, 4), 4, false, false, 0, cardEffects[2], 1.5f));
-        cards.Enqueue(new Card("Lightning", HitboxShape.Rectangle, new Vector2(3, .25f), 5, true, true, 15, cardEffects[3], .5f));
-        cards.Enqueue(new Card("Sun Disc", HitboxShape.Circle, new Vector2(1, 1), 6, true, true, 8, cardEffects[4], .75f));
+        cards.Enqueue(new Card("Rupture", HitboxShape.Rectangle, new Vector2(2, 2), 2, false, false, 0, cardEffects[0], 0, 1));
+        cards.Enqueue(new Card("Fireball", HitboxShape.Ellipse, new Vector2(.75f, .5f), 3, true, true, 10, cardEffects[1], 1f, 1));
+        cards.Enqueue(new Card("Meteor", HitboxShape.Circle, new Vector2(4, 4), 4, false, false, 0, cardEffects[2], 0, 4));
+        cards.Enqueue(new Card("Lightning", HitboxShape.Rectangle, new Vector2(3, .25f), 5, true, true, 15, cardEffects[3], 1f, 2));
+        cards.Enqueue(new Card("Sun Disc", HitboxShape.Circle, new Vector2(1, 1), 6, true, true, 8, cardEffects[4], 1f, 3));
 
         //set up card display
         cardUIOffset = -1 * (cardUIPrefab.GetComponent<RectTransform>().rect.height + 10);
@@ -30,11 +43,20 @@ public class CardManager : MonoBehaviour
         {
             GameObject newCardUI = Instantiate(cardUIPrefab, cardDisplay);
             newCardUI.GetComponent<RectTransform>().localPosition = new Vector3(0, (cardArr.Length - 1 - i) * cardUIOffset, 0);
-            newCardUI.transform.GetChild(0).GetComponent<Text>().text = cardArr[i].Name;
+            newCardUI.transform.GetChild(0).GetComponent<Text>().text = cardArr[i].Name + " - " + cardArr[i].ManaCost;
         }
 
         //get reference to gamemanager
         gameManager = FindObjectOfType<GameManager>();
+
+        //mana set up
+        currentMana = 0;
+        barBackground = manaDisplayParent.GetChild(0).GetComponent<Image>();
+        manaBar = manaDisplayParent.GetChild(1).GetComponent<Image>();
+        manaText = manaDisplayParent.GetChild(2).GetComponent<Text>();
+        barFullSize = barBackground.rectTransform.rect.width;
+        barHeight = barBackground.rectTransform.rect.height;
+        UpdateManaBar(currentMana, totalMana);
     }
 
     // Update is called once per frame
@@ -45,28 +67,47 @@ public class CardManager : MonoBehaviour
             return;
         }
 
-        if (Input.GetMouseButtonDown(0) && cards.Count > 0 && activeCard == null)
+        if (Input.GetMouseButtonDown(0) && cards.Count > 0)
         {
-            //activate card
-            cards.Peek().Activate(GetMousePosInWorld(Input.mousePosition), transform.position);
+            //activate card if there is sufficient mana
+            if (currentMana >= cards.Peek().ManaCost)
+            {
+                cards.Peek().Activate(GetMousePosInWorld(Input.mousePosition), transform.position);
+                currentMana -= cards.Peek().ManaCost;
+                UpdateManaBar(currentMana, totalMana);
+            }
+            else
+            {
+                FlashManaBar();
+            }
 
             //remove activated card from top, put it on the bottom
-            activeCard = cards.Dequeue();
-            cards.Enqueue(activeCard);
+            activeCards.Add(cards.Dequeue());
+            cards.Enqueue(activeCards[activeCards.Count - 1]);
 
             //update card display
-            UpdateCardDisplay(activeCard);
+            UpdateCardDisplay(activeCards[activeCards.Count - 1]);
         }
 
-        if(Input.GetMouseButtonDown(1) && cards.Count > 1 && activeCard == null)
+        if(Input.GetMouseButtonDown(1) && cards.Count > 1)
         {
             //get the first card
             Card firstCard = cards.Dequeue();
 
-            //activate card
-            cards.Peek().Activate(GetMousePosInWorld(Input.mousePosition), transform.position);
-
-            activeCard = cards.Dequeue();
+            //activate card if there is sufficient mana
+            if (currentMana >= cards.Peek().ManaCost)
+            {
+                cards.Peek().Activate(GetMousePosInWorld(Input.mousePosition), transform.position);
+                currentMana -= cards.Peek().ManaCost;
+                UpdateManaBar(currentMana, totalMana);
+            }
+            else
+            {
+                FlashManaBar();
+            }
+            
+            //add card to activeCards
+            activeCards.Add(cards.Dequeue());
 
             //send first card to the back so it ends up back in front after for
             cards.Enqueue(firstCard);
@@ -78,19 +119,46 @@ public class CardManager : MonoBehaviour
             }
 
             //send active card to the back
-            cards.Enqueue(activeCard);
+            cards.Enqueue(activeCards[activeCards.Count - 1]);
 
             //update card display
-            UpdateCardDisplay(activeCard);
+            UpdateCardDisplay(activeCards[activeCards.Count - 1]);
         }
 
-        if (activeCard != null)
+        //call update of active cards
+        for (int i = 0; i < activeCards.Count; i++)
         {
-            activeCard.Update();
+            activeCards[i].Update();
 
-            if (!activeCard.Active)
+            if (!activeCards[i].Active)
             {
-                activeCard = null;
+                activeCards.RemoveAt(i);
+                i--;
+            }
+        }
+
+        //increase mana
+        if (currentMana < totalMana)
+        {
+            currentMana += manaGainRate * Time.deltaTime;
+
+            if (currentMana > totalMana)
+            {
+                currentMana = totalMana;
+            }
+
+            UpdateManaBar(currentMana, totalMana);
+        }
+
+        if (manaBarFlashTimer > 0)
+        {
+            manaBarFlashTimer -= Time.deltaTime;
+
+            manaBar.color = new Color(0, (1 - manaBarFlashTimer / .5f) * .3f, 1 - manaBarFlashTimer / .5f, 1);
+
+            if (manaBarFlashTimer <= 0)
+            {
+                manaBar.color = new Color(0, .3f, 1, 1);
             }
         }
     }
@@ -126,7 +194,24 @@ public class CardManager : MonoBehaviour
             
             GameObject newCardUI = Instantiate(cardUIPrefab, cardDisplay);
             newCardUI.GetComponent<RectTransform>().localPosition = new Vector3(0, (cardArr.Length - 1 - i) * cardUIOffset, 0);
-            newCardUI.transform.GetChild(0).GetComponent<Text>().text = cardArr[i].Name;
+            newCardUI.transform.GetChild(0).GetComponent<Text>().text = cardArr[i].Name + " - " + cardArr[i].ManaCost;
         }
+    }
+
+    //update mana bar and text
+    private void UpdateManaBar(float amount, float max)
+    {
+        //change bar
+        manaBar.rectTransform.sizeDelta = new Vector2(amount / max * barFullSize, barHeight);
+
+        //change text
+        manaText.text = amount.ToString("F0");
+    }
+
+    //flash mana bar when there isnt enough mana to cast a spell
+    private void FlashManaBar()
+    {
+        manaBar.color = new Color(0, 0, 0, 1);
+        manaBarFlashTimer = .5f;
     }
 }

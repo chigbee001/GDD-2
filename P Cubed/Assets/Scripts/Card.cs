@@ -21,6 +21,7 @@ public class Card
     private float speed;
     private Sprite effectSprite;
     private float timeActive;
+    private int manaCost;
 
     //internal stuff
     private bool active;
@@ -40,8 +41,9 @@ public class Card
     /// <param name="speed">used for skillshot: speed it should travel at</param>
     /// <param name="effectSprite">used for both: sprite to show over hitbox</param>
     /// <param name="origin">used for skillshot: where skillshot should start when it is created</param>
-    /// <param name="timeActive">used for skillshot: time hitbox should be active for, used for both: time before next attack can be used</param>
-    public Card(string name, HitboxShape hitboxType, Vector2 size, float damage, bool isSkillShot, bool isProjectile, float speed, Sprite effectSprite, float timeActive)
+    /// <param name="timeActive">used for skillshot: time hitbox should be active for</param>
+    /// <param name="manaCost">used for both: mana cost</param>
+    public Card(string name, HitboxShape hitboxType, Vector2 size, float damage, bool isSkillShot, bool isProjectile, float speed, Sprite effectSprite, float timeActive, int manaCost)
     {
         this.name = name;
         this.hitboxType = hitboxType;
@@ -52,6 +54,7 @@ public class Card
         this.speed = speed;
         this.effectSprite = effectSprite;
         this.timeActive = timeActive;
+        this.manaCost = manaCost;
 
         active = false;
         timeActiveCounter = 0;
@@ -136,12 +139,10 @@ public class Card
             //damage enemies
             foreach (Collider2D enemy in enemiesToDamage)
             {
-                //damage enemies (eventually enemies will be able to take damage but for now we have this)
+                //damage enemies
                 if (enemy.tag == "Enemy")
                 {
-                    //edited to damage enemy otherwise enemies will no longer spawn due to how enemies are handled
                     enemy.GetComponentInParent<Enemy>().TakeDamage(1);
-                    //GameObject.Destroy(enemy.gameObject);
                 }
             }
 
@@ -152,7 +153,7 @@ public class Card
             currentObj.transform.localScale = new Vector3(size.x, size.y, 1);
 
             //set timer
-            timeActiveCounter = timeActive;
+            timeActiveCounter = .25f;
         }
     }
 
@@ -188,5 +189,13 @@ public class Card
     public string Name
     {
         get { return name; }
+    }
+
+    /// <summary>
+    /// mana cost of card
+    /// </summary>
+    public int ManaCost
+    {
+        get { return manaCost; }
     }
 }
