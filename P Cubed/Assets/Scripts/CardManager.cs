@@ -12,6 +12,7 @@ public class CardManager : MonoBehaviour
     public GameObject cardUIPrefab;
     private GameManager gameManager;
     private float cardUIOffset;
+    private Player player;
 
     //mana
     private int totalMana = 10; //max mana
@@ -57,6 +58,8 @@ public class CardManager : MonoBehaviour
         barFullSize = barBackground.rectTransform.rect.width;
         barHeight = barBackground.rectTransform.rect.height;
         UpdateManaBar(currentMana, totalMana);
+
+        player = gameObject.GetComponent<Player>();
     }
 
     // Update is called once per frame
@@ -67,7 +70,7 @@ public class CardManager : MonoBehaviour
             return;
         }
 
-        if (Input.GetMouseButtonDown(0) && cards.Count > 0)
+        if (Input.GetMouseButtonDown(0) && cards.Count > 0 && !player.Stunned)
         {
             //activate card if there is sufficient mana
             if (currentMana >= cards.Peek().ManaCost)
@@ -89,7 +92,7 @@ public class CardManager : MonoBehaviour
             UpdateCardDisplay(activeCards[activeCards.Count - 1]);
         }
 
-        if(Input.GetMouseButtonDown(1) && cards.Count > 1)
+        if(Input.GetMouseButtonDown(1) && cards.Count > 1 && !player.Stunned)
         {
             //get the first card
             Card firstCard = cards.Dequeue();
