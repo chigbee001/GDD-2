@@ -9,7 +9,10 @@ public class GameManager : MonoBehaviour
     public static int currentLevel;
     public GameObject pauseScreen;
     public GameObject loseScreen;
+    public GameObject upgradeScreen;
     public GameObject[] pumpkinPatch;
+    public GameObject[] spawners;
+    private float waveEndTime;
 
     // Start is called before the first frame update
     void Start()
@@ -30,17 +33,30 @@ public class GameManager : MonoBehaviour
         // Game stuff to happen here
         if (!paused)
         {
-
+            // If pumpkin dead show game over screen
+            // if(Input.GetKeyDown(KeyCode.I))
+            if (!PumpkinsAlive(pumpkinPatch))
+            {
+                loseScreen.SetActive(true);
+                paused = true;
+                Time.timeScale = 0;
+            }
+            // If all waves are done, pause the game for upgrades(For now 5 seconds to test)
+            // Selecting an upgrade also resumes game
         }
-
-        // If pumpkin dead show game over screen
-        // if(Input.GetKeyDown(KeyCode.I))
-        if (!paused && !PumpkinsAlive(pumpkinPatch))
+        if (Input.GetKeyDown(KeyCode.P))
         {
-            loseScreen.SetActive(true);
             paused = true;
+            waveEndTime = Time.realtimeSinceStartup;
             Time.timeScale = 0;
-            Debug.Log("HERE");
+            upgradeScreen.SetActive(true);
+        }
+        if (upgradeScreen.activeSelf)
+        {
+            if (waveEndTime + 5 < Time.realtimeSinceStartup)
+            {
+                Pause();
+            }
         }
     }
 
@@ -48,6 +64,7 @@ public class GameManager : MonoBehaviour
     {
         if (paused)
         {
+            upgradeScreen.SetActive(false);
             paused = false;
             pauseScreen.SetActive(false);
             Time.timeScale = 1;
@@ -65,6 +82,8 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Checks all the pumpkins to see if alive. Returns false if all dead
     /// </summary>
+    /// <param name="pumpkins">An array of all pumpkin objects in the game</param>
+    /// <returns></returns>
     public bool PumpkinsAlive(GameObject[] pumpkins)
     {
         int count = 0;
@@ -77,6 +96,23 @@ public class GameManager : MonoBehaviour
         }
         return !(count == pumpkins.Length);
     }
+    /// <summary>
+    /// Checks all spawners to see if their wave is alive
+    /// </summary>
+    /// <param name="spawners">An array of all spawners in the game</param>
+    /// <returns></returns>
+/*    public bool WaveAlive(GameObject[] spawners)
+    {
+        int count = 0;
+        foreach(GameObject s in spawners)
+        {
+            if(s.GetComponent<Spawner>().waveAlive == false)
+            {
+                count++;
+            }
+        }
+        return !(count == spawners.Length);
+    }*/
     /// <summary>
     /// Restarts the game
     /// </summary>
