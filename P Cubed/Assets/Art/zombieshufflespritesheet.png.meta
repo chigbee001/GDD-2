@@ -1,19 +1,31 @@
 fileFormatVersion: 2
-guid: afb57296203311943b2c4a1cabcab258
+guid: 6be944970db78044b9b470973f5e7cf1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 436195765437212625
-    second: dinospritesheet_0
+      213: 6344783462351261840
+    second: zombieshufflespritesheet_0
   - first:
-      213: -8255632849110134639
-    second: dinospritesheet_1
+      213: -7772387562975745903
+    second: zombieshufflespritesheet_1
   - first:
-      213: -3554099572473456085
-    second: dinospritesheet_2
+      213: -5222587332634254553
+    second: zombieshufflespritesheet_2
   - first:
-      213: 5243719340712482611
-    second: dinospritesheet_3
+      213: 3338320740893925774
+    second: zombieshufflespritesheet_3
+  - first:
+      213: 1217849288352974189
+    second: zombieshufflespritesheet_4
+  - first:
+      213: 7373200832745705796
+    second: zombieshufflespritesheet_5
+  - first:
+      213: -1962331892667796250
+    second: zombieshufflespritesheet_6
+  - first:
+      213: 3740716072342608577
+    second: zombieshufflespritesheet_7
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -54,7 +66,7 @@ TextureImporter:
   lightmap: 0
   compressionQuality: 50
   spriteMode: 2
-  spriteExtrude: 8
+  spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
@@ -115,12 +127,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: dinospritesheet_0
+      name: zombieshufflespritesheet_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 36
+        width: 24
         height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -129,19 +141,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1d72a63dcbdad0600800000000000000
-      internalID: 436195765437212625
+      spriteID: 090583261f23d0850800000000000000
+      internalID: 6344783462351261840
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: dinospritesheet_1
+      name: zombieshufflespritesheet_1
       rect:
         serializedVersion: 2
-        x: 36
+        x: 24
         y: 0
-        width: 36
+        width: 24
         height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -150,19 +162,40 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1909eb8f9a91e6d80800000000000000
-      internalID: -8255632849110134639
+      spriteID: 198aa2cf0bee22490800000000000000
+      internalID: -7772387562975745903
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: dinospritesheet_2
+      name: zombieshufflespritesheet_2
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 24
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72361edcd74a587b0800000000000000
+      internalID: -5222587332634254553
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zombieshufflespritesheet_3
       rect:
         serializedVersion: 2
         x: 72
         y: 0
-        width: 36
+        width: 24
         height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -171,19 +204,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b2a1a5ee44d4daec0800000000000000
-      internalID: -3554099572473456085
+      spriteID: e812d43d609145e20800000000000000
+      internalID: 3338320740893925774
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: dinospritesheet_3
+      name: zombieshufflespritesheet_4
       rect:
         serializedVersion: 2
-        x: 108
+        x: 96
         y: 0
-        width: 36
+        width: 24
         height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -192,8 +225,71 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 337530d35fe65c840800000000000000
-      internalID: 5243719340712482611
+      spriteID: d65cd3ea97ba6e010800000000000000
+      internalID: 1217849288352974189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zombieshufflespritesheet_5
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 0
+        width: 24
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4411c6da71fd25660800000000000000
+      internalID: 7373200832745705796
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zombieshufflespritesheet_6
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 0
+        width: 24
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6e4bd1e5a8564c4e0800000000000000
+      internalID: -1962331892667796250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zombieshufflespritesheet_7
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 0
+        width: 24
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1ca5399d271b9e330800000000000000
+      internalID: 3740716072342608577
       vertices: []
       indices: 
       edges: []
