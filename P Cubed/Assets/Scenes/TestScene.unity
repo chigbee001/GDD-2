@@ -3347,15 +3347,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 909280186448424828, guid: 41a547fea14909747b326c50a68f46a5, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0.75
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 909280187139811116, guid: 41a547fea14909747b326c50a68f46a5, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0.75
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 909280187249529344, guid: 41a547fea14909747b326c50a68f46a5, type: 3}
       propertyPath: m_FontData.m_FontSize
-      value: 13
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 909280187797497204, guid: 41a547fea14909747b326c50a68f46a5, type: 3}
       propertyPath: m_AnchoredPosition.y
