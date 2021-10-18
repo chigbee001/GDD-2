@@ -197,5 +197,15 @@ public class Card
     public int ManaCost
     {
         get { return manaCost; }
+        set { manaCost = value; }
+    }
+
+    /// <summary>
+    /// damage of card
+    /// </summary>
+    public float Damage
+    {
+        get { return damage; }
+        set { damage = value; }
     }
 }

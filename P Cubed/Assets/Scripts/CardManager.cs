@@ -217,4 +217,44 @@ public class CardManager : MonoBehaviour
         manaBar.color = new Color(0, 0, 0, 1);
         manaBarFlashTimer = .5f;
     }
+
+    /// <summary>
+    /// upgrades the chosen stat of the chosen card
+    /// </summary>
+    /// <param name="name">name of card to upgrade</param>
+    /// <param name="stat">stat of card to upgrade: mana, damage</param>
+    /// <returns>returns true if it was able to upgrade, returns false if the stat is at max or any other reason no upgrade would ocurr</returns>
+    public bool UpgradeCard(string name, string stat)
+    {
+        Card[] cardArr = cards.ToArray();
+        foreach (Card card in cardArr)
+        {
+            if (card.Name == name.ToLower())
+            {
+                //perhaps there will be more stats to upgrade later, need to figure out good numbers
+                switch (stat.ToLower())
+                {
+                    case "mana":
+                        //reduce mana cost
+                        if (card.ManaCost > 1)
+                        {
+                            card.ManaCost -= 1;
+                            return true;
+                        }
+                        break;
+
+                    case "damage":
+                        //increase damage
+                        card.Damage += 1;
+                        return true;
+                        //break;
+
+                    default:
+                        break;
+                }
+            }
+        }
+
+        return false;
+    }
 }
