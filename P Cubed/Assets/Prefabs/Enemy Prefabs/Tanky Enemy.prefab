@@ -152,6 +152,9 @@ MonoBehaviour:
   tankEnemy: 0
   shooterEnemy: 0
   pursuitEnemy: 0
+  player: {fileID: 0}
+  bulletPrefab: {fileID: 314475024464244402, guid: 101c555ee36fe5247b10a554a450a4bd, type: 3}
+  bulletSpeed: 0
 --- !u!114 &5143099569845662470
 MonoBehaviour:
   m_ObjectHideFlags: 0

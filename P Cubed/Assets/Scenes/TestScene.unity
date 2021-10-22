@@ -1227,6 +1227,7 @@ MonoBehaviour:
   waveTimer: 0
   timerReset: 1
   waveAlive: 0
+  player: {fileID: 1883992631}
 --- !u!212 &808444290
 SpriteRenderer:
   m_ObjectHideFlags: 0
