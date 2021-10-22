@@ -13,7 +13,12 @@ public class Enemy : MonoBehaviour
     public bool tankEnemy;
     public bool shooterEnemy;
     public bool pursuitEnemy;
-    
+
+    public Player player;
+    [SerializeField]
+    private Projectile bulletPrefab;
+    [SerializeField]
+    private float bulletSpeed;
 
     //enemy constructor for testing purposes
     public Enemy(float moveSpeed, float health)
@@ -97,4 +102,35 @@ public class Enemy : MonoBehaviour
         }
     }
 
+
+    // NOTE: I'm not sure if this is the right place to put these, but what follows is a bunch of methods for various types of bullet patterns
+    
+    private void DirectShot()
+    {
+        Projectile bullet = Instantiate(bulletPrefab);
+
+        bullet.transform.position = transform.position;
+        bullet.speed = bulletSpeed;
+        bullet.direction = player.transform.position - transform.position;
+    }
+
+    /// <summary>
+    /// Fires a number of projectiles in a given cone angle
+    /// </summary>
+    /// <param name="numBullets">Number of projectiles to fire</param>
+    /// <param name="spreadAngle">Angle between the widest apart bullets in degrees</param>
+    private void SpreadShot(int numBullets, float spreadAngle)
+    {
+        float theta = spreadAngle / numBullets;
+        float startingAngle = Vector2.Angle(player.transform.position, transform.position) - spreadAngle / 2;
+
+        for (int i = 0; i < numBullets; i++)
+        {
+            Projectile bullet = Instantiate(bulletPrefab);
+
+            bullet.transform.position = transform.position;
+            bullet.speed = bulletSpeed;
+            bullet.direction = new Vector2(Mathf.Cos(Mathf.Deg2Rad * (startingAngle + i * theta)), Mathf.Sin(Mathf.Deg2Rad * (startingAngle + i * theta)));
+        }
+    }
 }

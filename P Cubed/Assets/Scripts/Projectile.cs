@@ -6,7 +6,7 @@ public class Projectile : MonoBehaviour
 {
     public float speed { get; set; }
     public Vector3 direction { get; set; }
-    public Player player;
+    //public Player player;
     private Vector3 target;
     private float aliveTimer = 0;
 
@@ -45,7 +45,7 @@ public class Projectile : MonoBehaviour
             case "eBullet":
                 if(other.tag == "Player")
                 {
-                    player.TakeDamage();
+                    other.GetComponentInParent<Player>().TakeDamage();
                     Destroy(gameObject);
                 }
                 break;

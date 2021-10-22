@@ -13,6 +13,9 @@ public class Spawner : MonoBehaviour
     public bool waveAlive;
     private bool waveSpawned;
 
+    [SerializeField]
+    private Player player;
+
 
     //currently WIP this class will be used to control spawners to allow for waves to come from seperate spawn points with similar or different pathings
     void Start()
@@ -97,6 +100,7 @@ public class Spawner : MonoBehaviour
         thisEnemy.pathNumber = wavePattern;        
         thisEnemy = Instantiate(thisEnemy, spawnPoint);
         thisEnemy.transform.parent = this.transform.GetChild(1);
+        thisEnemy.player = player;
         EnemyManager.EnemiesAlive++;
 
     }
