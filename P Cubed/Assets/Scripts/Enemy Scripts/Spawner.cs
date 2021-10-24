@@ -11,6 +11,7 @@ public class Spawner : MonoBehaviour
     public float waveTimer;
     public float timerReset;
     public bool waveAlive;
+    public bool spawnerOn;
     private bool waveSpawned;
 
     [SerializeField]
@@ -24,6 +25,7 @@ public class Spawner : MonoBehaviour
         waveNumber = 0;
         waveAlive = false;
         waveSpawned = false;
+        spawnerOn = true;
     }
 
     private void Update()
@@ -33,7 +35,7 @@ public class Spawner : MonoBehaviour
             waveAlive = false;
         }
 
-        if(EnemyManager.EnemiesAlive > 0 || waveAlive)
+        if(EnemyManager.EnemiesAlive > 0 || waveAlive || !spawnerOn)
         {
             return;
         }
