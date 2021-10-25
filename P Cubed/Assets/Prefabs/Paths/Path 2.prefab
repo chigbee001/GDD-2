@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pathCost: 0
+  pathWeightedValue: 25
 --- !u!1 &3275837490990144247
 GameObject:
   m_ObjectHideFlags: 0

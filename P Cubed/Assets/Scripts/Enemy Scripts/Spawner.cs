@@ -3,112 +3,45 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
-{
-    private int wavePattern;
-    private int waveNumber;
-    public Wave[] waves;
-    public Transform spawnPoint;
-    public float waveTimer;
-    public float timerReset;
-    public bool waveAlive;
-    public static bool spawnerOn;
-    private bool waveSpawned;
+{        
+    public Transform spawnPoint;    
+    
 
     [SerializeField]
     private Player player;
 
-
     //currently WIP this class will be used to control spawners to allow for waves to come from seperate spawn points with similar or different pathings
     void Start()
-    {
-        wavePattern = 0;
-        waveNumber = 0;
-        waveAlive = false;
-        waveSpawned = false;
-        spawnerOn = true;
-    }
-
-    private void Update()
-    {
-        if(EnemyManager.EnemiesAlive == 0 && waveSpawned)
-        {
-            waveAlive = false;
-        }
-
-        if (EnemyManager.EnemiesAlive > 0 || waveAlive || !spawnerOn)
-        {
-            return;
-        }
-
-        // Runs once at start, and then once again after the whole coroutine is finished
-        // Since its set to false inside the statement after this one, it will trigger the second time this is run turning the spawner off
-        // Turning the spawner off triggers the game to show upgrade screen where it is set to true along with waveReadyToBeSpawned
-        if (EnemyManager.EnemiesAlive == 0 && spawnerOn && !GameManager.waveReadyToBeSpawned)
-        {
-            spawnerOn = false;
-        }
-        // waveReadyToBeSpawned param prevents a wave from spawning before the GameManager's Pause method runs, pausing and unpausing the game
-        // waveReadyToBeSpawned is set to true once you leave the upgrade screen
-        if ((waveTimer <= 0f || !waveAlive) && GameManager.waveReadyToBeSpawned)
-        {
-            GameManager.currentLevel += 1;
-            // Waves are not ready to spawn another wave when a wave is already in progress
-            GameManager.waveReadyToBeSpawned = false;
-            StartCoroutine(WaveSpawn());
-            waveTimer = timerReset;
-            return;
-        }
-
-        waveTimer -= Time.deltaTime;
-        waveTimer = Mathf.Clamp(waveTimer, 0f, Mathf.Infinity);
-
+    {  
     }
 
     /// <summary>
     /// Coroutine to handle the spawning of each wave
     /// </summary>
     /// <returns></returns>
-    IEnumerator WaveSpawn()
-    {
-        waveSpawned = false;
-        waveAlive = true;
-        Wave wave = waves[waveNumber];
-        for(int i = 0; i < wave.enemyRanks.Length; i++)
+    public IEnumerator WaveSpawn(Wave waveToSpawn, int wavePattern)
+    {      
+       
+        for(int i = 0; i < waveToSpawn.enemyRanks.Length; i++)
         {
-            if (wave.enemyRanks[i].enemyNumbers > 0)
+            if (waveToSpawn.enemyRanks[i].enemyNumbers > 0)
             {                
-                for (int j = 0; j < wave.enemyRanks[i].enemyNumbers; j++)
+                for (int j = 0; j < waveToSpawn.enemyRanks[i].enemyNumbers; j++)
                 {
-                    SpawnEnemy(wave.enemyRanks[i].enemyType);
-                    yield return new WaitForSeconds(1 * wave.spawnRate);
+                    SpawnEnemy(waveToSpawn.enemyRanks[i].enemyType, wavePattern);
+                    yield return new WaitForSeconds(1 * waveToSpawn.spawnRate);
                 }
             }
             else
             { 
-                SpawnEnemy(wave.enemyRanks[i].enemyType);
-                yield return new WaitForSeconds(1 * wave.spawnRate);
+                SpawnEnemy(waveToSpawn.enemyRanks[i].enemyType, wavePattern);
+                yield return new WaitForSeconds(1 * waveToSpawn.spawnRate);
             }
-        }        
-        if (wavePattern < Pathing.pathCount - 1)
-        {
-            wavePattern++;
-        }
-        else
-        {
-            wavePattern = 0;
-        }       
-        if( waveNumber < waves.Length - 1)
-        {
-            waveNumber++;
-        }
-        else
-        {
-            waveNumber = 0;
-        }
-        waveSpawned = true;
+        }     
+        
     }
 
-    void SpawnEnemy(GameObject enemy)
+    void SpawnEnemy(GameObject enemy, int wavePattern)
     {
         
         Enemy thisEnemy = enemy.GetComponent<Enemy>();

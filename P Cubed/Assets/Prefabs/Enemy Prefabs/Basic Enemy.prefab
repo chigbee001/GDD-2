@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 341125803797249091}
   - component: {fileID: 341125803797249100}
   - component: {fileID: 341125803797249101}
-  - component: {fileID: 5203861567856842442}
   - component: {fileID: 7785519298822667071}
   m_Layer: 0
   m_Name: Basic Enemy
@@ -152,24 +151,12 @@ MonoBehaviour:
   tankEnemy: 0
   shooterEnemy: 0
   pursuitEnemy: 0
+  spawnCost: 3
+  spawnWeightedValue: 50
+  groupSpawnDiscount: 0
   player: {fileID: 0}
   bulletPrefab: {fileID: 314475024464244402, guid: 101c555ee36fe5247b10a554a450a4bd, type: 3}
   bulletSpeed: 0
---- !u!114 &5203861567856842442
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 341125803797249103}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8531178973e87374683b641828a18d23, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnCost: 0
-  spawnWeightedValue: 0
-  groupSpawnDiscount: 0
 --- !u!95 &7785519298822667071
 Animator:
   serializedVersion: 3

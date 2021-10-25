@@ -8,5 +8,10 @@ public class Path : MonoBehaviour
 {
     public int pathCost;
     public int pathWeightedValue;
-    
+
+    private void Start()
+    {
+        pathCost = Mathf.Clamp(pathCost, 1, 50);
+    }
+
 }

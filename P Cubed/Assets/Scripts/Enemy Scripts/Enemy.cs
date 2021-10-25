@@ -13,6 +13,9 @@ public class Enemy : MonoBehaviour
     public bool tankEnemy;
     public bool shooterEnemy;
     public bool pursuitEnemy;
+    public int spawnCost = 0;
+    public int spawnWeightedValue = 0;
+    public int groupSpawnDiscount = 0;
 
     public Player player;
     [SerializeField]
@@ -33,6 +36,9 @@ public class Enemy : MonoBehaviour
         rigidBody = this.GetComponent<Rigidbody2D>();
         Pathing.SetPath(pathNumber);
         nextStep = Pathing.pathPoints[0];
+        spawnWeightedValue = Mathf.Clamp(spawnWeightedValue, 1, 50);
+        health = GameManager.currentLevel * 2;
+        
     }
 
     //currently just moves enemies along the path 

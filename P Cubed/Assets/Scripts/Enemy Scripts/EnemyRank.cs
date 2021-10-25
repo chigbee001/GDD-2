@@ -6,5 +6,12 @@ using UnityEngine;
 public class EnemyRank
 {
     public GameObject enemyType;
-    public int enemyNumbers;    
+    public int enemyNumbers;  
+    
+
+    public EnemyRank(GameObject eType, int eneNumbers)
+    {
+        this.enemyType = eType;
+        this.enemyNumbers = eneNumbers;
+    }
 }

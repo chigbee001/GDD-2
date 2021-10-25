@@ -7,7 +7,6 @@ public class GameManager : MonoBehaviour
 {
     public bool paused;
     public static int currentLevel;
-    public static bool waveReadyToBeSpawned;
     public GameObject pauseScreen;
     public GameObject loseScreen;
     public GameObject upgradeScreen;
@@ -19,8 +18,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         paused = false;
-        currentLevel = 0;
-        waveReadyToBeSpawned = true;
+        currentLevel = 1;
     }
 
     // Update is called once per frame
@@ -45,7 +43,7 @@ public class GameManager : MonoBehaviour
             }
             // If all waves are done, pause the game for upgrades(For now 5 seconds to test)
             // Selecting an upgrade also resumes game
-            if (EnemyManager.EnemiesAlive == 0 && !Spawner.spawnerOn)
+            if (EnemyManager.EnemiesAlive == 0 && !EnemyManager.waveAlive)
             {
                 paused = true;
                 waveEndTime = Time.realtimeSinceStartup;
@@ -56,7 +54,7 @@ public class GameManager : MonoBehaviour
 
         if (upgradeScreen.activeSelf)
         {
-            if (waveEndTime + 5 < Time.realtimeSinceStartup)
+            if (waveEndTime + EnemyManager.waveTimer < Time.realtimeSinceStartup)
             {
                 Pause();
             }
@@ -69,8 +67,7 @@ public class GameManager : MonoBehaviour
         {
             if(upgradeScreen.activeSelf == true)
             {
-                Spawner.spawnerOn = true;
-                waveReadyToBeSpawned = true;
+                EnemyManager.spawnWave = true;
             }
             upgradeScreen.SetActive(false);
             paused = false;
