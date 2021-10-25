@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public bool paused;
     public static int currentLevel;
+    public static bool waveReadyToBeSpawned;
     public GameObject pauseScreen;
     public GameObject loseScreen;
     public GameObject upgradeScreen;
@@ -19,6 +20,7 @@ public class GameManager : MonoBehaviour
     {
         paused = false;
         currentLevel = 0;
+        waveReadyToBeSpawned = true;
     }
 
     // Update is called once per frame
@@ -43,14 +45,15 @@ public class GameManager : MonoBehaviour
             }
             // If all waves are done, pause the game for upgrades(For now 5 seconds to test)
             // Selecting an upgrade also resumes game
+            if (EnemyManager.EnemiesAlive == 0 && !Spawner.spawnerOn)
+            {
+                paused = true;
+                waveEndTime = Time.realtimeSinceStartup;
+                Time.timeScale = 0;
+                upgradeScreen.SetActive(true);
+            }
         }
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            paused = true;
-            waveEndTime = Time.realtimeSinceStartup;
-            Time.timeScale = 0;
-            upgradeScreen.SetActive(true);
-        }
+
         if (upgradeScreen.activeSelf)
         {
             if (waveEndTime + 5 < Time.realtimeSinceStartup)
@@ -64,6 +67,11 @@ public class GameManager : MonoBehaviour
     {
         if (paused)
         {
+            if(upgradeScreen.activeSelf == true)
+            {
+                Spawner.spawnerOn = true;
+                waveReadyToBeSpawned = true;
+            }
             upgradeScreen.SetActive(false);
             paused = false;
             pauseScreen.SetActive(false);
@@ -96,23 +104,7 @@ public class GameManager : MonoBehaviour
         }
         return !(count == pumpkins.Length);
     }
-    /// <summary>
-    /// Checks all spawners to see if their wave is alive
-    /// </summary>
-    /// <param name="spawners">An array of all spawners in the game</param>
-    /// <returns></returns>
-/*    public bool WaveAlive(GameObject[] spawners)
-    {
-        int count = 0;
-        foreach(GameObject s in spawners)
-        {
-            if(s.GetComponent<Spawner>().waveAlive == false)
-            {
-                count++;
-            }
-        }
-        return !(count == spawners.Length);
-    }*/
+
     /// <summary>
     /// Restarts the game
     /// </summary>
