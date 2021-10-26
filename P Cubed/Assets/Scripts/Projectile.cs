@@ -6,6 +6,7 @@ public class Projectile : MonoBehaviour
 {
     public float speed { get; set; }
     public Vector3 direction { get; set; }
+    public int damage { get; set; }
     //public Player player;
     private Vector3 target;
     private float aliveTimer = 0;
@@ -37,7 +38,7 @@ public class Projectile : MonoBehaviour
                 if(other.tag == "Enemy")
                 {
                     //added functionality for enemies with more than 1 hp commented out destuction for now
-                    other.GetComponentInParent<Enemy>().TakeDamage(1);
+                    other.GetComponentInParent<Enemy>().TakeDamage(damage);
                     //Destroy(other.gameObject);
                     Destroy(gameObject);
                 }

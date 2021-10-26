@@ -13,6 +13,7 @@ public class CardManager : MonoBehaviour
     private GameManager gameManager;
     private float cardUIOffset;
     private Player player;
+    public RuntimeAnimatorController[] cardAnims = new RuntimeAnimatorController[5];
 
     //mana
     private int totalMana = 10; //max mana
@@ -31,11 +32,11 @@ public class CardManager : MonoBehaviour
     void Start()
     {
         //create cards
-        cards.Enqueue(new Card("Rupture", HitboxShape.Rectangle, new Vector2(2, 2), 2, false, false, 0, cardEffects[0], 0, 1));
-        cards.Enqueue(new Card("Fireball", HitboxShape.Ellipse, new Vector2(.75f, .5f), 3, true, true, 10, cardEffects[1], 1f, 1));
-        cards.Enqueue(new Card("Meteor", HitboxShape.Circle, new Vector2(4, 4), 4, false, false, 0, cardEffects[2], 0, 4));
-        cards.Enqueue(new Card("Lightning", HitboxShape.Rectangle, new Vector2(3, .25f), 5, true, true, 15, cardEffects[3], 1f, 2));
-        cards.Enqueue(new Card("Sun Disc", HitboxShape.Circle, new Vector2(1, 1), 6, true, true, 8, cardEffects[4], 1f, 3));
+        cards.Enqueue(new Card("Rupture", HitboxShape.Rectangle, new Vector2(2, 2), 2, false, false, 0, cardEffects[0], 0, 1, cardAnims[0]));
+        cards.Enqueue(new Card("Fireball", HitboxShape.Ellipse, new Vector2(.75f, .5f), 3, true, true, 10, cardEffects[1], 1f, 1, cardAnims[1]));
+        cards.Enqueue(new Card("Meteor", HitboxShape.Circle, new Vector2(4, 4), 4, false, false, 0, cardEffects[2], 0, 4, cardAnims[2]));
+        cards.Enqueue(new Card("Lightning", HitboxShape.Rectangle, new Vector2(3, .25f), 5, true, true, 15, cardEffects[3], 1f, 2, null));
+        cards.Enqueue(new Card("Sun Disc", HitboxShape.Circle, new Vector2(1, 1), 6, true, true, 8, cardEffects[4], 1f, 3, cardAnims[4]));
 
         //set up card display
         cardUIOffset = -1 * (cardUIPrefab.GetComponent<RectTransform>().rect.height + 10);

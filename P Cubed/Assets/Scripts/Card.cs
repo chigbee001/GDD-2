@@ -15,13 +15,14 @@ public class Card
     private string name;
     private HitboxShape hitboxType;
     private Vector2 size;
-    private float damage;
+    private int damage;
     private bool isSkillShot;
     private bool isProjectile;
     private float speed;
     private Sprite effectSprite;
     private float timeActive;
     private int manaCost;
+    private RuntimeAnimatorController effectAnimator;
 
     //internal stuff
     private bool active;
@@ -43,7 +44,8 @@ public class Card
     /// <param name="origin">used for skillshot: where skillshot should start when it is created</param>
     /// <param name="timeActive">used for skillshot: time hitbox should be active for</param>
     /// <param name="manaCost">used for both: mana cost</param>
-    public Card(string name, HitboxShape hitboxType, Vector2 size, float damage, bool isSkillShot, bool isProjectile, float speed, Sprite effectSprite, float timeActive, int manaCost)
+    /// <param name="effectAnimator">used for both: animator of effect</param>
+    public Card(string name, HitboxShape hitboxType, Vector2 size, int damage, bool isSkillShot, bool isProjectile, float speed, Sprite effectSprite, float timeActive, int manaCost, RuntimeAnimatorController effectAnimator)
     {
         this.name = name;
         this.hitboxType = hitboxType;
@@ -55,6 +57,7 @@ public class Card
         this.effectSprite = effectSprite;
         this.timeActive = timeActive;
         this.manaCost = manaCost;
+        this.effectAnimator = effectAnimator;
 
         active = false;
         timeActiveCounter = 0;
@@ -76,9 +79,13 @@ public class Card
         {
             //create skillshot
             currentObj = new GameObject("card");
-            currentObj.transform.localScale = new Vector3(size.x, size.y, 1);
+            //currentObj.transform.localScale = new Vector3(size.x, size.y, 1);
             currentObj.transform.position = origin;
             currentObj.AddComponent<SpriteRenderer>().sprite = effectSprite;
+            if (effectAnimator != null)
+            {
+                currentObj.AddComponent<Animator>().runtimeAnimatorController = effectAnimator as RuntimeAnimatorController;
+            }
             currentObj.tag = "pBullet";
 
             //add collider
@@ -87,10 +94,12 @@ public class Card
                 case HitboxShape.Circle:
                 case HitboxShape.Ellipse:
                     currentObj.AddComponent<CircleCollider2D>().isTrigger = true;
+                    currentObj.GetComponent<CircleCollider2D>().radius = size.x / 2;
                     break;
 
                 case HitboxShape.Rectangle:
                     currentObj.AddComponent<BoxCollider2D>().isTrigger = true;
+                    currentObj.GetComponent<BoxCollider2D>().size = new Vector2(size.x, size.y);
                     break;
 
                 default:
@@ -110,6 +119,7 @@ public class Card
             Projectile proj = currentObj.AddComponent<Projectile>();
             proj.direction = direction;
             proj.speed = speed;
+            proj.damage = damage;
 
             //set timer
             timeActiveCounter = timeActive;
@@ -142,15 +152,19 @@ public class Card
                 //damage enemies
                 if (enemy.tag == "Enemy")
                 {
-                    enemy.GetComponentInParent<Enemy>().TakeDamage(1);
+                    enemy.GetComponentInParent<Enemy>().TakeDamage(damage);
                 }
             }
 
             //create effect object
             currentObj = new GameObject("card");
             currentObj.AddComponent<SpriteRenderer>().sprite = effectSprite;
+            if (effectAnimator != null)
+            {
+                currentObj.AddComponent<Animator>().runtimeAnimatorController = effectAnimator as RuntimeAnimatorController;
+            }
             currentObj.transform.position = mousePos;
-            currentObj.transform.localScale = new Vector3(size.x, size.y, 1);
+            //currentObj.transform.localScale = new Vector3(size.x, size.y, 1);
 
             //set timer
             timeActiveCounter = .25f;
@@ -203,7 +217,7 @@ public class Card
     /// <summary>
     /// damage of card
     /// </summary>
-    public float Damage
+    public int Damage
     {
         get { return damage; }
         set { damage = value; }
