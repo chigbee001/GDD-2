@@ -13,6 +13,7 @@ public class EnemyManager : MonoBehaviour
     public float timerReset;
     public static bool waveAlive;
     public static bool spawnWave;
+    public static bool allComplete;
 
     private Wave nextWave;
     private EnemyRank nextRank;
@@ -38,7 +39,19 @@ public class EnemyManager : MonoBehaviour
 
     private void Update()
     {
-        
+        if (allComplete == false)
+        {
+            foreach (Spawner s in spawners)
+            {
+                if(!s.complete)
+                {
+                    allComplete = false;
+                    break;
+                }
+                allComplete = true;
+            }
+        }
+
         if (EnemiesAlive == 0 && waveSpawned)
         {
             waveAlive = false;
@@ -90,6 +103,7 @@ public class EnemyManager : MonoBehaviour
 
     public void Spawn()
     {
+        allComplete = false;
         spawnInProcess = true;
         currentPath = 0;
         rankCounter = 0;

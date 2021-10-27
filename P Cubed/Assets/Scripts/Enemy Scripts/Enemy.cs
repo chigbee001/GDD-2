@@ -75,7 +75,7 @@ public class Enemy : MonoBehaviour
     }
 
     public void TakeDamage(float damageTaken)
-    {
+    {        
         if (tankEnemy)
         {
             health -= .5f * damageTaken;

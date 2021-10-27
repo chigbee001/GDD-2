@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
             }
             // If all waves are done, pause the game for upgrades(For now 5 seconds to test)
             // Selecting an upgrade also resumes game
-            if (EnemyManager.EnemiesAlive == 0 && !EnemyManager.waveAlive)
+            if (EnemyManager.EnemiesAlive == 0 && !EnemyManager.waveAlive && EnemyManager.allComplete)
             {
                 paused = true;
                 waveEndTime = Time.realtimeSinceStartup;

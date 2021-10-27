@@ -6,7 +6,7 @@ public class Spawner : MonoBehaviour
 {        
     public Transform spawnPoint;
     public Pathing ownedPathing;
-
+    public bool complete;
     [SerializeField]
     private Player player;
 
@@ -20,8 +20,8 @@ public class Spawner : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     public IEnumerator WaveSpawn(Wave waveToSpawn, int wavePattern)
-    {      
-       
+    {
+        complete = false;
         for(int i = 0; i < waveToSpawn.enemyRanks.Length; i++)
         {
             if (waveToSpawn.enemyRanks[i].enemyNumbers > 0)
@@ -37,8 +37,8 @@ public class Spawner : MonoBehaviour
                 SpawnEnemy(waveToSpawn.enemyRanks[i].enemyType, wavePattern);
                 yield return new WaitForSeconds(1 * waveToSpawn.spawnRate);
             }
-        }     
-        
+        }
+        complete = true;
     }
 
     void SpawnEnemy(GameObject enemy, int wavePattern)
