@@ -32,11 +32,11 @@ public class CardManager : MonoBehaviour
     void Start()
     {
         //create cards
+        cards.Enqueue(new Card("Sun Disc", HitboxShape.Circle, new Vector2(1, 1), 6, true, true, 8, cardEffects[4], 1f, 3, cardAnims[4]));
         cards.Enqueue(new Card("Rupture", HitboxShape.Rectangle, new Vector2(2, 2), 2, false, false, 0, cardEffects[0], 0, 1, cardAnims[0]));
         cards.Enqueue(new Card("Fireball", HitboxShape.Ellipse, new Vector2(.75f, .5f), 3, true, true, 10, cardEffects[1], 1f, 1, cardAnims[1]));
         cards.Enqueue(new Card("Meteor", HitboxShape.Circle, new Vector2(4, 4), 4, false, false, 0, cardEffects[2], 0, 4, cardAnims[2]));
         cards.Enqueue(new Card("Lightning", HitboxShape.Rectangle, new Vector2(3, .25f), 5, true, true, 15, cardEffects[3], 1f, 2, null));
-        cards.Enqueue(new Card("Sun Disc", HitboxShape.Circle, new Vector2(1, 1), 6, true, true, 8, cardEffects[4], 1f, 3, cardAnims[4]));
 
         //set up card display
         cardUIOffset = -1 * (cardUIPrefab.GetComponent<RectTransform>().rect.height + 10);
@@ -61,6 +61,9 @@ public class CardManager : MonoBehaviour
         UpdateManaBar(currentMana, totalMana);
 
         player = gameObject.GetComponent<Player>();
+
+        totalMana = 10;
+        manaGainRate = 1;
     }
 
     // Update is called once per frame
@@ -257,5 +260,23 @@ public class CardManager : MonoBehaviour
         }
 
         return false;
+    }
+
+    /// <summary>
+    /// property for regen rate of mana, mana regens at ManaRegenRate per second, default 1
+    /// </summary>
+    public float ManaRegenRate
+    {
+        get { return manaGainRate; }
+        set { manaGainRate = value; }
+    }
+
+    /// <summary>
+    /// property for maximum mana, default 10
+    /// </summary>
+    public int MaxMana
+    {
+        get { return totalMana; }
+        set { totalMana = value; }
     }
 }
