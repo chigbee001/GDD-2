@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {        
-    public Transform spawnPoint;    
-    
+    public Transform spawnPoint;
+    public Pathing ownedPathing;
 
     [SerializeField]
     private Player player;

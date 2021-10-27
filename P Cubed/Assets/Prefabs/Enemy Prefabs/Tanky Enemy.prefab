@@ -148,11 +148,11 @@ MonoBehaviour:
   moveSpeed: 1
   health: 2
   pathNumber: 0
-  tankEnemy: 0
+  tankEnemy: 1
   shooterEnemy: 0
   pursuitEnemy: 0
   spawnCost: 5
-  spawnWeightedValue: 25
+  spawnWeightedValue: 66
   groupSpawnDiscount: 0
   player: {fileID: 0}
   bulletPrefab: {fileID: 314475024464244402, guid: 101c555ee36fe5247b10a554a450a4bd, type: 3}

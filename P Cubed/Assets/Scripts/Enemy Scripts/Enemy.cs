@@ -38,7 +38,7 @@ public class Enemy : MonoBehaviour
         nextStep = Pathing.pathPoints[0];
         spawnWeightedValue = Mathf.Clamp(spawnWeightedValue, 1, 50);
         health = GameManager.currentLevel * 2;
-        
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
     //currently just moves enemies along the path 
@@ -56,6 +56,9 @@ public class Enemy : MonoBehaviour
         else
         {
             //pursuit enemies will move towards the player and stun player then die upon contact
+            Vector2 movement = player.transform.position - transform.position;
+            transform.Translate(movement.normalized * moveSpeed * Time.deltaTime, Space.World);
+            
         }
     }
 
@@ -71,7 +74,7 @@ public class Enemy : MonoBehaviour
         nextStep = Pathing.pathPoints[pathIndex];
     }
 
-    public void TakeDamage(int damageTaken)
+    public void TakeDamage(float damageTaken)
     {
         if (tankEnemy)
         {
@@ -105,7 +108,16 @@ public class Enemy : MonoBehaviour
         if(other.tag == "Player") 
         {
             other.GetComponent<Player>().TakeDamage();
+            if(pursuitEnemy == true)
+            {
+                Die();
+            }
+            else
+            {
+                TakeDamage(1);
+            }
         }
+
     }
 
 

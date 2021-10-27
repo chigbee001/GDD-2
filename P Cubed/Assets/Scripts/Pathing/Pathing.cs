@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Pathing : MonoBehaviour
 {
     //script to handle paths holds waypoint information for each path allowing for easy creation of new paths

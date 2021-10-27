@@ -100,17 +100,19 @@ public class EnemyManager : MonoBehaviour
         rollCounter = 0;
         nextWave = new Wave();
         nextWave.spawnRate = 2;
-        while(pointsToSpend > 0 && !costsExceedPoints && rollCounter < 10)
+        while(pointsToSpend > 0 && !costsExceedPoints && rollCounter < 12)
         {
             costsExceedPoints = true;
-            foreach(GameObject e in enemyTypes)
+            rand = Random.Range(1, 100);
+            foreach (GameObject e in enemyTypes)
             {
                 enemiesInRankCounter = 0;
-                while (e.GetComponent<Enemy>().spawnWeightedValue >= rand && pointsToSpend >= e.GetComponent<Enemy>().spawnCost)
+                if (e.GetComponent<Enemy>().spawnWeightedValue >= rand && pointsToSpend >= e.GetComponent<Enemy>().spawnCost)
                 {
-                    enemiesInRankCounter++;
-                    rand = Random.Range(1, 51);
-                    pointsToSpend -= e.GetComponent<Enemy>().spawnCost;
+                    rand = Random.Range(1, pointsToSpend / e.GetComponent<Enemy>().spawnCost);
+                    enemiesInRankCounter += rand;
+                    
+                    pointsToSpend -= e.GetComponent<Enemy>().spawnCost * enemiesInRankCounter;
                 }
                 if (enemiesInRankCounter > 0)
                 {
@@ -130,10 +132,9 @@ public class EnemyManager : MonoBehaviour
                         }
 
                     }
-
-                        //Add(nextRank);
-                }
-                rand = Random.Range(1, 51);
+                    costsExceedPoints = false;
+                    break; 
+                }                
                 rollCounter++;
                 if (e.GetComponent<Enemy>().spawnCost < pointsToSpend)
                 {
@@ -142,30 +143,33 @@ public class EnemyManager : MonoBehaviour
 
             }            
         }
-        while (!pathChosen)
-        {
-            foreach (GameObject path in Pathing.paths)
-            {
-                if (path.GetComponent<Path>().pathWeightedValue >= rand)
-                {
-                    rand = Random.Range(1, 51);
-                    pathChosen = true;                    
-                    break;
-                }
-                else
-                {
-                    currentPath++;
-                    rand = Random.Range(1, 100);
-                }
-            }
-            if (!pathChosen)
-            {
-                currentPath = 0;
-            }
-        }
+        
         foreach (Spawner s in spawners)
         {
+            while (!pathChosen)
+            {
+                rand = Random.Range(1, 100);
+                foreach (GameObject path in s.ownedPathing.editablePathArray)
+                {
+                    if (path.GetComponent<Path>().pathWeightedValue >= rand)
+                    {
+                        
+                        pathChosen = true;
+                        break;
+                    }
+                    else
+                    {
+                        currentPath++;
+                        
+                    }
+                }
+                if (!pathChosen)
+                {
+                    currentPath = 0;
+                }
+            }
             StartCoroutine(s.WaveSpawn(nextWave, currentPath));
+            pathChosen = false;
         }
         
         waveSpawned = true;

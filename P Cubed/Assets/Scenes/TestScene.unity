@@ -738,6 +738,9 @@ MonoBehaviour:
   editablePathArray:
   - {fileID: 1136745962988883072, guid: 0d836ceaed64ce847b5f311211b9a8c8, type: 3}
   - {fileID: 3275837490924538060, guid: cfb66b99549ebf04b8987e4034ab832e, type: 3}
+  - {fileID: 6019298751259167462, guid: 1efed22e55bacd94bb69ce1d5fa7b3a6, type: 3}
+  - {fileID: 7684998349395191407, guid: 90720fee35aad9d4ea0c4d13c0411c31, type: 3}
+  - {fileID: 4782273921055897340, guid: 1b998e47ee1a8134a8a40a2e77c689e0, type: 3}
   spawnPoint: {fileID: 808444288}
 --- !u!1 &602100945
 GameObject:
@@ -1211,6 +1214,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 808444288}
+  ownedPathing: {fileID: 508716719}
   player: {fileID: 1883992631}
 --- !u!212 &808444290
 SpriteRenderer:
