@@ -3232,6 +3232,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 808444288}
   ownedPathing: {fileID: 508716719}
+  complete: 0
   player: {fileID: 1883992631}
 --- !u!212 &808444290
 SpriteRenderer:
@@ -5490,9 +5491,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   editablePathArray:
-  - {fileID: 1136745962988883072, guid: 0d836ceaed64ce847b5f311211b9a8c8, type: 3}
+  - {fileID: 8336224073809621398, guid: 492674ad469e4604eb09fcaa5ca19221, type: 3}
   - {fileID: 7132386025391267775, guid: fa378352ab2222c4da38b8cf518cd618, type: 3}
-  - {fileID: 659810645753703715, guid: 70a61c105e3539c4d9ae20c45736fa81, type: 3}
+  - {fileID: 7132386025391267775, guid: fa378352ab2222c4da38b8cf518cd618, type: 3}
   - {fileID: 3428836182198448089, guid: 9cea58b945c5398498c399de3a92503f, type: 3}
   - {fileID: 511615099751848633, guid: 2f379dd12d2e45640be5398d26cd8f18, type: 3}
   spawnPoint: {fileID: 1521742086}
@@ -5841,6 +5842,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 1521742086}
   ownedPathing: {fileID: 1473297903}
+  complete: 0
   player: {fileID: 1883992631}
 --- !u!212 &1521742088
 SpriteRenderer:
