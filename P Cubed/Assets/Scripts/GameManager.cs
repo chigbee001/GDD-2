@@ -14,16 +14,27 @@ public class GameManager : MonoBehaviour
     public GameObject[] spawners;
     private float waveEndTime;
 
+    //tutorial variables
+    private bool tutorialOn = true;
+    private int currentTutorialScreenNum = 1;
+    public Transform tutorialParent;
+
     // Start is called before the first frame update
     void Start()
     {
-        paused = false;
+        paused = true;
         currentLevel = 1;
+        tutorialParent.gameObject.SetActive(true);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetMouseButtonDown(0) && tutorialOn)
+        {
+            ProgressTutorial();
+        }
+
         // Pause Game
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -119,5 +130,27 @@ public class GameManager : MonoBehaviour
     public bool IsPaused
     {
         get { return paused; }
+    }
+
+    //progresses the tutorial
+    private void ProgressTutorial()
+    {
+        if (currentTutorialScreenNum >= 4)
+        {
+            paused = false;
+            tutorialParent.gameObject.SetActive(false);
+            tutorialOn = false;
+        }
+        else
+        {
+            currentTutorialScreenNum++;
+
+            tutorialParent.GetChild(currentTutorialScreenNum).gameObject.SetActive(true);
+
+            if (currentTutorialScreenNum > 1)
+            {
+                tutorialParent.GetChild(currentTutorialScreenNum - 1).gameObject.SetActive(false);
+            }
+        }
     }
 }
