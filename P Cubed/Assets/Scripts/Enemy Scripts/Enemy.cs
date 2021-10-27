@@ -53,7 +53,7 @@ public class Enemy : MonoBehaviour
                 GetNextStep();
             }
         }
-        else
+        if(pursuitEnemy)
         {
             //pursuit enemies will move towards the player and stun player then die upon contact
             Vector2 movement = player.transform.position - transform.position;
