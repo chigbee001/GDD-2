@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 1759940453680616114}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -145,14 +145,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea2dab7ba11548d428b622b36b6c3062, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
-  health: 2
-  pathNumber: 0
+  moveSpeed: 0.5
+  healthScaling: 1
+  pathNumber: 5
   tankEnemy: 1
-  shooterEnemy: 0
+  shooterEnemy: 1
   pursuitEnemy: 0
-  spawnCost: 5
-  spawnWeightedValue: 66
+  spawnCost: 10
+  spawnWeightedValue: 80
   groupSpawnDiscount: 0
   damageFlashDuration: 0.25
   player: {fileID: 0}

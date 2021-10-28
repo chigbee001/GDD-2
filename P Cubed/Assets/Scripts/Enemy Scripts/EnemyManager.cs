@@ -6,6 +6,7 @@ public class EnemyManager : MonoBehaviour
 {
     private int pointsToSpend;
     private bool costsExceedPoints;
+    public int pointsScaling;
     public GameObject[] enemyTypes;
     public static int EnemiesAlive;
     public Spawner[] spawners;
@@ -108,7 +109,7 @@ public class EnemyManager : MonoBehaviour
         currentPath = 0;
         rankCounter = 0;
         rand = Random.Range(1, 51);
-        pointsToSpend = GameManager.currentLevel * 10;
+        pointsToSpend = GameManager.currentLevel * pointsScaling;
         costsExceedPoints = false;
         enemiesInRankCounter = 0;
         rollCounter = 0;

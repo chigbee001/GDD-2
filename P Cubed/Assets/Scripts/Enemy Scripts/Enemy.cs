@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    private float health;
     private Rigidbody2D rigidBody;
-    public float moveSpeed;
-    public float health;
+    public float moveSpeed;    
+    public float healthScaling;
     public int pathNumber;
     private int pathIndex = 0;
     private Transform nextStep;
@@ -56,7 +57,7 @@ public class Enemy : MonoBehaviour
         Pathing.SetPath(pathNumber);
         nextStep = Pathing.pathPoints[0];
         spawnWeightedValue = Mathf.Clamp(spawnWeightedValue, 1, 50);
-        health = GameManager.currentLevel * 2;
+        health = GameManager.currentLevel * healthScaling;
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
 
         defaultColor = GetComponent<SpriteRenderer>().color;
