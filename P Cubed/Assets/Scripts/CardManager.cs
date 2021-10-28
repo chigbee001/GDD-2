@@ -274,7 +274,7 @@ public class CardManager : MonoBehaviour
                     if (cardArr[i].Name.ToLower() == cardInfoParent.GetChild(j).name.ToLower())
                     {
                         Text cardInfo = cardInfoParent.GetChild(j).GetChild(1).GetComponent<Text>();
-                        cardInfoParent.GetChild(j).GetChild(1).GetComponent<Text>().text = string.Format("{0}{1}\n{2}{3}\n{4}",
+                        cardInfoParent.GetChild(j).GetChild(1).GetComponent<Text>().text = string.Format("{0}{1}\n\n{2}{3}{4}",
                             cardInfo.text.Substring(0, cardInfo.text.IndexOf("Damage: ") + "Damage: ".Length),
                             cardArr[i].Damage,
                             cardInfo.text.Substring(cardInfo.text.IndexOf("Mana Cost: "), "Mana Cost: ".Length),
@@ -285,7 +285,7 @@ public class CardManager : MonoBehaviour
                     if (cardArr[i].Name.ToLower() == cardUpgradeParent1.GetChild(j).name.ToLower())
                     {
                         Text cardInfo = cardUpgradeParent1.GetChild(j).GetChild(1).GetComponent<Text>();
-                        cardUpgradeParent1.GetChild(j).GetChild(1).GetComponent<Text>().text = string.Format("{0}{1}\n{2}{3}\n{4}",
+                        cardUpgradeParent1.GetChild(j).GetChild(1).GetComponent<Text>().text = string.Format("{0}{1}\n\n{2}{3}{4}",
                             cardInfo.text.Substring(0, cardInfo.text.IndexOf("Damage: ") + "Damage: ".Length),
                             cardArr[i].Damage,
                             cardInfo.text.Substring(cardInfo.text.IndexOf("Mana Cost: "), "Mana Cost: ".Length),
@@ -296,7 +296,7 @@ public class CardManager : MonoBehaviour
                     if (cardArr[i].Name.ToLower() == cardUpgradeParent2.GetChild(j).name.ToLower())
                     {
                         Text cardInfo = cardUpgradeParent2.GetChild(j).GetChild(1).GetComponent<Text>();
-                        cardUpgradeParent2.GetChild(j).GetChild(1).GetComponent<Text>().text = string.Format("{0}{1}\n{2}{3}\n{4}",
+                        cardUpgradeParent2.GetChild(j).GetChild(1).GetComponent<Text>().text = string.Format("{0}{1}\n\n{2}{3}{4}",
                             cardInfo.text.Substring(0, cardInfo.text.IndexOf("Damage: ") + "Damage: ".Length),
                             cardArr[i].Damage,
                             cardInfo.text.Substring(cardInfo.text.IndexOf("Mana Cost: "), "Mana Cost: ".Length),

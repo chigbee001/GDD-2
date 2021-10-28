@@ -162,7 +162,7 @@ MonoBehaviour:
   shootsSpread: 0
   numBulletsInSpread: 2
   spreadAngle: 0
-  shootCooldown: 1
+  shootCooldown: 2
   initialShootDelay: 2
 --- !u!95 &740774142282637489
 Animator:

@@ -11,16 +11,15 @@ public class GameManager : MonoBehaviour
     public static int currentLevel;
     public GameObject pauseScreen;
     public GameObject loseScreen;
-    public GameObject upgradeScreen;
     public GameObject[] pumpkinPatch;
     public GameObject[] spawners;
-    public CardManager cardManager;
-
-    private float waveEndTime;
-    public Button upgradeButton1;
-    public Button upgradeButton2;
 
     // Upgade variables
+    public CardManager cardManager;
+    private float waveEndTime;
+    public GameObject upgradeScreen;
+    public Button upgradeButton1;
+    public Button upgradeButton2;
     private string[] cardNames;
     private string[] upgradeNames;
     private int rng1stCard;
@@ -39,7 +38,8 @@ public class GameManager : MonoBehaviour
     {
         paused = true;
         cardNames = new string[]{ "Rupture", "Fireball", "Meteor", "Lightning", "Sun Disc"};
-        upgradeNames = new string[] { "Mana", "Damage" };
+        // 1:4 ratio of Mana:Damage
+        upgradeNames = new string[] { "Mana", "Damage" , "Damage" , "Damage" };
         currentLevel = 1;
         Time.timeScale = 0;
         tutorialParent.gameObject.SetActive(true);
@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
                 paused = true;
                 Time.timeScale = 0;
             }
-            // If all waves are done, pause the game for upgrades(For now 5 seconds to test)
+            // If all waves are done, pause the game for upgrades
             // Selecting an upgrade also resumes game
             if (EnemyManager.EnemiesAlive == 0 && !EnemyManager.waveAlive && EnemyManager.allComplete)
             {
@@ -80,30 +80,46 @@ public class GameManager : MonoBehaviour
                 waveEndTime = Time.realtimeSinceStartup;
                 Time.timeScale = 0;
                 upgradeScreen.SetActive(true);
-                rng1stCard = Random.Range(0, 4);
-                rng2ndCard = Random.Range(0, 4);
-                cardList1.GetChild(rng1stCard).gameObject.SetActive(true);
-                Debug.Log(rng1stCard);
-                Debug.Log(rng2ndCard);
-                cardList2.GetChild(rng2ndCard).gameObject.SetActive(true);
+                rng1stCard = Random.Range(0, 5);
+                rng2ndCard = Random.Range(0, 5);
+                rngUpgradeType = Random.Range(0, 4);
                 while (rng1stCard == rng2ndCard)
                 {
                     rng2ndCard = Random.Range(0, 5);
                 }
-                rngUpgradeType = Random.Range(0, 2);
+                cardList1.GetChild(rng1stCard).gameObject.SetActive(true);
+                cardList2.GetChild(rng2ndCard).gameObject.SetActive(true);
+                //Debug.Log("Card 1:" + rng1stCard + "=" + cardNames[rng1stCard]);
+                //Debug.Log("Card 2:" + rng2ndCard + "=" + cardNames[rng2ndCard]);
+                //Debug.Log("Upgrade is: " + rngUpgradeType + "=" + upgradeNames[rngUpgradeType]);
+                if (rngUpgradeType == 0)
+                {
+                    upgradeButton1.GetComponentInChildren<Text>().text = "Upgrade Mana";
+                    upgradeButton2.GetComponentInChildren<Text>().text = "Upgrade Mana";
+                }
+                else
+                {
+                    upgradeButton1.GetComponentInChildren<Text>().text = "Upgrade Damage";
+                    upgradeButton2.GetComponentInChildren<Text>().text = "Upgrade Damage";
+                }
+
+
                 cardManager.ManaRegenRate += 0.1f;
             }
         }
 
+        // Disables the upgrade screen after 30 seconds of not choosing
         if (upgradeScreen.activeSelf)
         {
-            if (waveEndTime + EnemyManager.waveTimer < Time.realtimeSinceStartup)
+            if (waveEndTime + 30 < Time.realtimeSinceStartup)
             {
                 Pause();
             }
         }
     }
-
+    /// <summary>
+    /// Pauses and unpauses the screen based of the paused bool
+    /// </summary>
     public void Pause()
     {
         if (paused)
@@ -137,6 +153,7 @@ public class GameManager : MonoBehaviour
     public void UpgradeCard(int rng1st, int rng2nd)
     {
         cardManager.UpgradeCard(cardNames[rng1st], upgradeNames[rng2nd]);
+        paused = true;
         Pause();
     }
     /// <summary>

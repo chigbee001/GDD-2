@@ -465,12 +465,12 @@ MonoBehaviour:
   paused: 0
   pauseScreen: {fileID: 403675901}
   loseScreen: {fileID: 1791301054}
-  upgradeScreen: {fileID: 1776564728}
   pumpkinPatch:
   - {fileID: 1980385311}
   spawners:
   - {fileID: 808444287}
   cardManager: {fileID: 1883992636}
+  upgradeScreen: {fileID: 1776564728}
   upgradeButton1: {fileID: 1473551130}
   upgradeButton2: {fileID: 110954297}
   cardList1: {fileID: 192033635}
@@ -2493,7 +2493,7 @@ GameObject:
   - component: {fileID: 592960605}
   - component: {fileID: 592960604}
   m_Layer: 5
-  m_Name: 'fireball '
+  m_Name: fireball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2815,7 +2815,7 @@ GameObject:
   - component: {fileID: 649553479}
   - component: {fileID: 649553478}
   m_Layer: 5
-  m_Name: 'fireball '
+  m_Name: fireball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7905,7 +7905,7 @@ GameObject:
   - component: {fileID: 2032715491}
   - component: {fileID: 2032715490}
   m_Layer: 5
-  m_Name: 'fireball '
+  m_Name: fireball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
