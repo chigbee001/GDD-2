@@ -7124,7 +7124,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 5
   stunDuration: 1
-  invulnerabilityDuration: 1.5
+  invulnerabilityDuration: 3
 --- !u!212 &1883992632
 SpriteRenderer:
   m_ObjectHideFlags: 0
