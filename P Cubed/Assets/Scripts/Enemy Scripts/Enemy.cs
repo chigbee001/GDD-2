@@ -25,8 +25,22 @@ public class Enemy : MonoBehaviour
     public Player player;
     [SerializeField]
     private Projectile bulletPrefab;
-    [SerializeField]
+    [SerializeField] [Min(0)]
     private float bulletSpeed;
+
+    [SerializeField]
+    private bool shootsDirect = false;
+    [SerializeField]
+    private bool shootsSpread = false;
+    [SerializeField] [Min(2)]
+    private int numBulletsInSpread;
+    [SerializeField] [Min(0)]
+    private float spreadAngle;
+    [SerializeField] [Min(0)]
+    private float shootCooldown;
+    private float shootTimer = 0;
+    [SerializeField] [Min(0)]
+    private float initialShootDelay;
 
     //enemy constructor for testing purposes
     public Enemy(float moveSpeed, float health)
@@ -44,7 +58,10 @@ public class Enemy : MonoBehaviour
         spawnWeightedValue = Mathf.Clamp(spawnWeightedValue, 1, 50);
         health = GameManager.currentLevel * 2;
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+
         defaultColor = GetComponent<SpriteRenderer>().color;
+
+        shootTimer = initialShootDelay;
     }
 
     //currently just moves enemies along the path 
@@ -75,6 +92,25 @@ public class Enemy : MonoBehaviour
         {
             damageFlashTimer -= Time.deltaTime;
             damageFlashTimer = Mathf.Max(damageFlashTimer, 0);
+        }
+
+        // Shoot if off cooldown
+        if (shootsDirect && shootTimer <= 0)
+        {
+            DirectShot();
+            shootTimer = shootCooldown;
+        }
+        if (shootsSpread && shootTimer <= 0)
+        {
+            SpreadShot(numBulletsInSpread, spreadAngle);
+            shootTimer = shootCooldown;
+        }
+
+        // Update shooting timer
+        if (shootTimer > 0)
+        {
+            shootTimer -= Time.deltaTime;
+            shootTimer = Mathf.Max(shootTimer, 0);
         }
     }
 
@@ -174,8 +210,19 @@ public class Enemy : MonoBehaviour
     /// <param name="spreadAngle">Angle between the widest apart bullets in degrees</param>
     private void SpreadShot(int numBullets, float spreadAngle)
     {
-        float theta = spreadAngle / numBullets;
-        float startingAngle = Vector2.Angle(player.transform.position, transform.position) - spreadAngle / 2;
+        if (numBullets <= 1)
+        {
+            DirectShot();
+            return;
+        }
+
+        float theta = spreadAngle / (numBullets - 1);
+        float startingAngle = Mathf.Rad2Deg * Mathf.Atan((transform.position.y - player.transform.position.y) / (transform.position.x - player.transform.position.x)) - spreadAngle / 2;
+
+        if (player.transform.position.x < transform.position.x)
+        {
+            startingAngle += 180;
+        }
 
         for (int i = 0; i < numBullets; i++)
         {

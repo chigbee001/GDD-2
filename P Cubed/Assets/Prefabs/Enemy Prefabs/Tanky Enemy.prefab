@@ -147,7 +147,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 1
   health: 2
-  pathNumber: 3
+  pathNumber: 0
   tankEnemy: 1
   shooterEnemy: 0
   pursuitEnemy: 0
@@ -157,7 +157,13 @@ MonoBehaviour:
   damageFlashDuration: 0.25
   player: {fileID: 0}
   bulletPrefab: {fileID: 314475024464244402, guid: 101c555ee36fe5247b10a554a450a4bd, type: 3}
-  bulletSpeed: 0
+  bulletSpeed: 5
+  shootsDirect: 0
+  shootsSpread: 1
+  numBulletsInSpread: 3
+  spreadAngle: 15
+  shootCooldown: 5
+  initialShootDelay: 2
 --- !u!95 &8573592171018212727
 Animator:
   serializedVersion: 3

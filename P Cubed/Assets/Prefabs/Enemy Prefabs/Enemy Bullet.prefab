@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6207606106651389402}
   - component: {fileID: 7135407753522508091}
   - component: {fileID: 314475024464244402}
+  - component: {fileID: -3331877068414737445}
   m_Layer: 0
   m_Name: Enemy Bullet
   m_TagString: eBullet
@@ -95,3 +96,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 168c32bc40f11944a808b5793c0a70c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!58 &-3331877068414737445
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8464893805092455933}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
