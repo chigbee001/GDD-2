@@ -147,13 +147,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 1
   health: 2
-  pathNumber: 0
+  pathNumber: 3
   tankEnemy: 1
   shooterEnemy: 0
   pursuitEnemy: 0
   spawnCost: 5
   spawnWeightedValue: 66
   groupSpawnDiscount: 0
+  damageFlashDuration: 0.25
   player: {fileID: 0}
   bulletPrefab: {fileID: 314475024464244402, guid: 101c555ee36fe5247b10a554a450a4bd, type: 3}
   bulletSpeed: 0

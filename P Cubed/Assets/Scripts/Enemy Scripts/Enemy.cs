@@ -17,6 +17,11 @@ public class Enemy : MonoBehaviour
     public int spawnWeightedValue = 0;
     public int groupSpawnDiscount = 0;
 
+    [SerializeField]
+    private float damageFlashDuration = 0.25f;
+    private float damageFlashTimer = 0;
+    private Color defaultColor;
+
     public Player player;
     [SerializeField]
     private Projectile bulletPrefab;
@@ -39,10 +44,11 @@ public class Enemy : MonoBehaviour
         spawnWeightedValue = Mathf.Clamp(spawnWeightedValue, 1, 50);
         health = GameManager.currentLevel * 2;
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        defaultColor = GetComponent<SpriteRenderer>().color;
     }
 
     //currently just moves enemies along the path 
-    private void Update()
+    public void Update()
     {
         if (!pursuitEnemy)
         {
@@ -60,6 +66,16 @@ public class Enemy : MonoBehaviour
             transform.Translate(movement.normalized * moveSpeed * Time.deltaTime, Space.World);
             
         }
+
+        // Damage flash
+        Flicker();
+
+        // Update damage flash timer
+        if (damageFlashTimer > 0)
+        {
+            damageFlashTimer -= Time.deltaTime;
+            damageFlashTimer = Mathf.Max(damageFlashTimer, 0);
+        }
     }
 
     //when a path point is reached next point is obtained if endpoint is reached enemies attack and die
@@ -75,7 +91,9 @@ public class Enemy : MonoBehaviour
     }
 
     public void TakeDamage(float damageTaken)
-    {        
+    {
+        damageFlashTimer = damageFlashDuration;
+
         if (tankEnemy)
         {
             health -= .5f * damageTaken;
@@ -87,6 +105,23 @@ public class Enemy : MonoBehaviour
         if(health <= 0)
         {
             Die();
+        }
+    }
+
+    /// <summary>
+    /// Makes the enemy's color red if they've been recently damaged
+    /// </summary>
+    private void Flicker()
+    {
+        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+
+        if (damageFlashTimer > 0)
+        {
+            sprite.color = Color.red;
+        }
+        else
+        {
+            sprite.color = defaultColor;
         }
     }
 
