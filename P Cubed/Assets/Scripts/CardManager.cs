@@ -28,6 +28,11 @@ public class CardManager : MonoBehaviour
     private float barHeight;
     private float manaBarFlashTimer = 0;
 
+    //upgrade ui
+    public Transform cardInfoParent;
+    public Transform cardUpgradeParent1;
+    public Transform cardUpgradeParent2;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -231,9 +236,10 @@ public class CardManager : MonoBehaviour
     public bool UpgradeCard(string name, string stat)
     {
         Card[] cardArr = cards.ToArray();
+        bool upgradeSuccess = false;
         foreach (Card card in cardArr)
         {
-            if (card.Name == name.ToLower())
+            if (card.Name.ToLower() == name.ToLower())
             {
                 //perhaps there will be more stats to upgrade later, need to figure out good numbers
                 switch (stat.ToLower())
@@ -243,15 +249,15 @@ public class CardManager : MonoBehaviour
                         if (card.ManaCost > 1)
                         {
                             card.ManaCost -= 1;
-                            return true;
+                            upgradeSuccess = true;
                         }
                         break;
 
                     case "damage":
                         //increase damage
                         card.Damage += 1;
-                        return true;
-                        //break;
+                        upgradeSuccess = true;
+                        break;
 
                     default:
                         break;
@@ -259,7 +265,50 @@ public class CardManager : MonoBehaviour
             }
         }
 
-        return false;
+        if (upgradeSuccess)
+        {
+            for(int i = 0; i < cardArr.Length; i++)
+            {
+                for (int j = 0; j < cardInfoParent.childCount; j++)
+                {
+                    if (cardArr[i].Name.ToLower() == cardInfoParent.GetChild(j).name.ToLower())
+                    {
+                        Text cardInfo = cardInfoParent.GetChild(j).GetChild(1).GetComponent<Text>();
+                        cardInfoParent.GetChild(j).GetChild(1).GetComponent<Text>().text = string.Format("{0}{1}\n{2}{3}\n{4}",
+                            cardInfo.text.Substring(0, cardInfo.text.IndexOf("Damage: ") + "Damage: ".Length),
+                            cardArr[i].Damage,
+                            cardInfo.text.Substring(cardInfo.text.IndexOf("Mana Cost: "), "Mana Cost: ".Length),
+                            cardArr[i].ManaCost,
+                            cardInfo.text.Substring(cardInfo.text.IndexOf("Mana Cost: ") + "Mana Cost: ".Length + 1)
+                        );
+                    }
+                    if (cardArr[i].Name.ToLower() == cardUpgradeParent1.GetChild(j).name.ToLower())
+                    {
+                        Text cardInfo = cardUpgradeParent1.GetChild(j).GetChild(1).GetComponent<Text>();
+                        cardUpgradeParent1.GetChild(j).GetChild(1).GetComponent<Text>().text = string.Format("{0}{1}\n{2}{3}\n{4}",
+                            cardInfo.text.Substring(0, cardInfo.text.IndexOf("Damage: ") + "Damage: ".Length),
+                            cardArr[i].Damage,
+                            cardInfo.text.Substring(cardInfo.text.IndexOf("Mana Cost: "), "Mana Cost: ".Length),
+                            cardArr[i].ManaCost,
+                            cardInfo.text.Substring(cardInfo.text.IndexOf("Mana Cost: ") + "Mana Cost: ".Length + 1)
+                        );
+                    }
+                    if (cardArr[i].Name.ToLower() == cardUpgradeParent2.GetChild(j).name.ToLower())
+                    {
+                        Text cardInfo = cardUpgradeParent2.GetChild(j).GetChild(1).GetComponent<Text>();
+                        cardUpgradeParent2.GetChild(j).GetChild(1).GetComponent<Text>().text = string.Format("{0}{1}\n{2}{3}\n{4}",
+                            cardInfo.text.Substring(0, cardInfo.text.IndexOf("Damage: ") + "Damage: ".Length),
+                            cardArr[i].Damage,
+                            cardInfo.text.Substring(cardInfo.text.IndexOf("Mana Cost: "), "Mana Cost: ".Length),
+                            cardArr[i].ManaCost,
+                            cardInfo.text.Substring(cardInfo.text.IndexOf("Mana Cost: ") + "Mana Cost: ".Length + 1)
+                        );
+                    }
+                }
+            }
+        }
+
+        return upgradeSuccess;
     }
 
     /// <summary>

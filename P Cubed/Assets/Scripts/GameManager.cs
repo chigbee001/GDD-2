@@ -88,9 +88,9 @@ public class GameManager : MonoBehaviour
                 cardList2.GetChild(rng2ndCard).gameObject.SetActive(true);
                 while (rng1stCard == rng2ndCard)
                 {
-                    rng2ndCard = Random.Range(0, 4);
+                    rng2ndCard = Random.Range(0, 5);
                 }
-                rngUpgradeType = Random.Range(0, 1);
+                rngUpgradeType = Random.Range(0, 2);
                 cardManager.ManaRegenRate += 0.1f;
             }
         }

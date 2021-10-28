@@ -773,13 +773,17 @@ MonoBehaviour:
   m_Text: 'Damage: 6
 
 
+    Mana Cost: 3
+
+
     Type: Projectile
 
 
     Cooldown: .75
 
 
-    Speed: 8'
+    Speed:
+    8'
 --- !u!222 &143706465
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -981,13 +985,17 @@ MonoBehaviour:
   m_Text: 'Damage: 3
 
 
+    Mana Cost: 1
+
+
     Type: Projectile
 
 
     Cooldown: .75
 
 
-    Speed: 10'
+    Speed:
+    10'
 --- !u!222 &164264371
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1261,10 +1269,14 @@ MonoBehaviour:
   m_Text: 'Damage: 2
 
 
+    Mana Cost: 1
+
+
     Type: Instant, Area of effect
 
 
-    Cooldown: .5'
+    Cooldown:
+    .5'
 --- !u!222 &246766425
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2698,10 +2710,14 @@ MonoBehaviour:
   m_Text: 'Damage: 2
 
 
+    Mana Cost: 1
+
+
     Type: Instant, Area of effect
 
 
-    Cooldown: .5'
+    Cooldown:
+    .5'
 --- !u!222 &606395077
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3412,13 +3428,17 @@ MonoBehaviour:
   m_Text: 'Damage: 5
 
 
+    Mana Cost: 2
+
+
     Type: Projectile
 
 
     Cooldown: .5
 
 
-    Speed: 15'
+    Speed:
+    15'
 --- !u!222 &869759047
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3500,13 +3520,17 @@ MonoBehaviour:
   m_Text: 'Damage: 5
 
 
+    Mana Cost: 2
+
+
     Type: Projectile
 
 
     Cooldown: .5
 
 
-    Speed: 15'
+    Speed:
+    15'
 --- !u!222 &875345133
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4345,13 +4369,17 @@ MonoBehaviour:
   m_Text: 'Damage: 6
 
 
+    Mana Cost: 3
+
+
     Type: Projectile
 
 
     Cooldown: .75
 
 
-    Speed: 8'
+    Speed:
+    8'
 --- !u!222 &1080008399
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5056,13 +5084,17 @@ MonoBehaviour:
   m_Text: 'Damage: 3
 
 
+    Mana Cost: 1
+
+
     Type: Projectile
 
 
     Cooldown: .75
 
 
-    Speed: 10'
+    Speed:
+    10'
 --- !u!222 &1313200835
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6050,10 +6082,14 @@ MonoBehaviour:
   m_Text: 'Damage: 4
 
 
+    Mana Cost: 4
+
+
     Type: Instant, Area of effect
 
 
-    Cooldown: 1.5'
+    Cooldown:
+    1.5'
 --- !u!222 &1487940308
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7162,10 +7198,14 @@ MonoBehaviour:
   m_Text: 'Damage: 4
 
 
+    Mana Cost: 4
+
+
     Type: Instant, Area of effect
 
 
-    Cooldown: 1.5'
+    Cooldown:
+    1.5'
 --- !u!222 &1782483368
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7624,6 +7664,9 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 9100000, guid: f6012e425d5c83a44a18ba898a2d7f3a, type: 2}
   manaDisplayParent: {fileID: 683926761}
+  cardInfoParent: {fileID: 1598935031}
+  cardUpgradeParent1: {fileID: 192033635}
+  cardUpgradeParent2: {fileID: 521299825}
 --- !u!95 &1883992637
 Animator:
   serializedVersion: 3
