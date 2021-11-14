@@ -663,7 +663,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ammoText: {fileID: 67032968}
-  playerBullet: {fileID: 0}
+  playerBullet: {fileID: 2737971176240590092, guid: 913422daa5a10504a93d85f95984fb81, type: 3}
 --- !u!1 &1936305837
 GameObject:
   m_ObjectHideFlags: 0

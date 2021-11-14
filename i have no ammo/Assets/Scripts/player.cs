@@ -67,9 +67,11 @@ public class player : MonoBehaviour
         {
             ammoCount -= 5;
             ammoText.text = ammoCount.ToString();
-            Debug.Log("player bullet fired");
-            //projectile newBullet = Instantiate(playerBullet, transform.position, Quaternion.identity).GetComponent<bullet>();
-            //todo once projectile script is created: give projectile direction and speed
+            projectile newBullet = Instantiate(playerBullet, transform.position, Quaternion.identity).GetComponent<projectile>();
+            newBullet.speed = bulletSpeed;
+            newBullet.speedCap = bulletSpeed;
+            newBullet.speedFloor = bulletSpeed;
+            newBullet.direction = Vector2.right;
         }
     }
 
