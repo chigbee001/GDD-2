@@ -10,6 +10,7 @@ public class player : MonoBehaviour
     private const float parryTimerMax = .15f;
     private float parryCoolDown = 0;
     private const float parryCoolDownMax = .25f;
+    private SpriteRenderer hitboxIndicator;
 
     //movement variables
     private Rigidbody2D playerRigidbody;
@@ -24,11 +25,26 @@ public class player : MonoBehaviour
     private float bulletSpeed = 7;
     public GameObject playerBullet;
 
+    //health variables
+    public Image healthBarImage;
+    private float healthBarMaxWidth;
+    private float maxHealth;
+    private float currentHealth;
+    private bool isAlive;
+
+    //animation
+    public Animator playerAnimator;
+
     // Start is called before the first frame update
     void Start()
     {
         playerRigidbody = gameObject.GetComponent<Rigidbody2D>();
         ammoCount = 0;
+        maxHealth = 10;
+        currentHealth = maxHealth;
+        healthBarMaxWidth = healthBarImage.rectTransform.sizeDelta.x;
+        isAlive = true;
+        hitboxIndicator = transform.GetChild(0).GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -46,12 +62,12 @@ public class player : MonoBehaviour
 
             if (parryTimer <= 0)
             {
-                gameObject.GetComponent<SpriteRenderer>().color = Color.magenta;
+                hitboxIndicator.color = new Color(.8f, 0.06f, 0.43f, .5f);
             }
 
             if (parryCoolDown <= 0)
             {
-                gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+                hitboxIndicator.color = new Color(1, 0.26f, 0.63f, .5f);
             }
         }
 
@@ -66,12 +82,14 @@ public class player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W) && ammoCount >= 5)
         {
             ammoCount -= 5;
-            ammoText.text = ammoCount.ToString();
+            ammoText.text = string.Format("ammo: {0} {1}", ammoCount.ToString(), ammoCount >= 5 ? " <color=#00ff00ff>ready</color>" : "");
             projectile newBullet = Instantiate(playerBullet, transform.position, Quaternion.identity).GetComponent<projectile>();
             newBullet.speed = bulletSpeed;
             newBullet.speedCap = bulletSpeed;
             newBullet.speedFloor = bulletSpeed;
             newBullet.direction = Vector2.right;
+
+            playerAnimator.SetTrigger("shoot");
         }
     }
 
@@ -116,20 +134,40 @@ public class player : MonoBehaviour
             //if parryTimer > 0 then the parry was successful
             if (parryTimer > 0)
             {
-                Debug.Log("bullet parried");
+                //Debug.Log("bullet parried");
+
                 ammoCount++;
-                ammoText.text = ammoCount.ToString();
+                ammoText.text = string.Format("ammo: {0} {1}", ammoCount.ToString(), ammoCount >= 5 ? " <color=#33ff33>ready</color>" : "");
+
+                //Destroy(collision.gameObject); //commented out for testing
             }
+            //else player gets hit
             else
             {
-                gameObject.GetComponent<SpriteRenderer>().color = Color.blue;
-                Debug.Log("bullet hit");
+                //Debug.Log("bullet hit");
+
+                currentHealth -= 2;
+                if (currentHealth <= 0)
+                {
+                    isAlive = false;
+                }
+
+                UpdateHealthBar();
+
+                //Destroy(collision.gameObject); //commented out for testing
             }
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    //update healthbar ui
+    private void UpdateHealthBar()
     {
-        gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+        healthBarImage.rectTransform.sizeDelta = new Vector2(currentHealth / maxHealth * healthBarMaxWidth, healthBarImage.rectTransform.sizeDelta.y);
+    }
+
+    //property for if the player is alive
+    public bool IsAlive
+    {
+        get { return isAlive; }
     }
 }
