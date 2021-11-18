@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public bool paused;
     public GameObject pauseScreen;
     public GameObject loseScreen;
+    public GameObject player;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +23,12 @@ public class GameManager : MonoBehaviour
         {
             Pause();
         }
+
+        /*if (!player.GetComponent<player>().IsAlive)
+        {
+            Time.timeScale = 0;
+            loseScreen.SetActive(true);
+        }*/
     }
 
     /// <summary>
@@ -52,8 +59,8 @@ public class GameManager : MonoBehaviour
 
         loseScreen.SetActive(false);
         Time.timeScale = 1;
-        // Need multiple scenes b4 I write this
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        // Need multiple scenes b4 I change this
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
     }
     /// <summary>
