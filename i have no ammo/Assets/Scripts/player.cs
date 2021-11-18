@@ -139,7 +139,7 @@ public class player : MonoBehaviour
                 ammoCount++;
                 ammoText.text = string.Format("ammo: {0} {1}", ammoCount.ToString(), ammoCount >= 5 ? " <color=#33ff33>ready</color>" : "");
 
-                //Destroy(collision.gameObject); //commented out for testing
+                Destroy(collision.gameObject); //commented out for testing
             }
             //else player gets hit
             else
@@ -154,7 +154,7 @@ public class player : MonoBehaviour
 
                 UpdateHealthBar();
 
-                //Destroy(collision.gameObject); //commented out for testing
+                Destroy(collision.gameObject); //commented out for testing
             }
         }
     }
