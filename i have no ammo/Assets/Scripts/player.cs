@@ -6,11 +6,7 @@ using UnityEngine.UI;
 public class player : MonoBehaviour
 {
     //parry variables
-    private float parryTimer = 0;
-    private const float parryTimerMax = .15f;
-    private float parryCoolDown = 0;
-    private const float parryCoolDownMax = .25f;
-    private SpriteRenderer hitboxIndicator;
+    private parry parry;
 
     //movement variables
     private Rigidbody2D playerRigidbody;
@@ -19,6 +15,9 @@ public class player : MonoBehaviour
     //ammo variables
     private int ammoCount;
     public Text ammoText;
+    public Image ammoChargeBarImage;
+    private float ammoChargeBarMaxWidth;
+    private float ammoChargePercent;
 
     //bullet variables
     private int attackDamage = 1;
@@ -31,6 +30,8 @@ public class player : MonoBehaviour
     private float maxHealth;
     private float currentHealth;
     private bool isAlive;
+    private float invincibilityTime = 0;
+    private const float invincibilityTimeMax = .25f;
 
     //animation
     public Animator playerAnimator;
@@ -39,50 +40,29 @@ public class player : MonoBehaviour
     void Start()
     {
         playerRigidbody = gameObject.GetComponent<Rigidbody2D>();
+
+        ammoChargePercent = 0;
         ammoCount = 0;
+        ammoChargeBarMaxWidth = ammoChargeBarImage.rectTransform.sizeDelta.x;
+        UpdateBarSize(ammoChargeBarImage, ammoChargeBarMaxWidth, ammoChargePercent);
+
         maxHealth = 10;
         currentHealth = maxHealth;
         healthBarMaxWidth = healthBarImage.rectTransform.sizeDelta.x;
+        invincibilityTime = 0;
         isAlive = true;
-        hitboxIndicator = transform.GetChild(0).GetComponent<SpriteRenderer>();
+
+        parry = transform.GetChild(0).GetComponent<parry>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //parry timing
-        if (parryTimer > 0)
-        {
-            parryTimer -= Time.deltaTime;
-        }
-
-        if (parryCoolDown > 0)
-        {
-            parryCoolDown -= Time.deltaTime;
-
-            if (parryTimer <= 0)
-            {
-                hitboxIndicator.color = new Color(.8f, 0.06f, 0.43f, .5f);
-            }
-
-            if (parryCoolDown <= 0)
-            {
-                hitboxIndicator.color = new Color(1, 0.26f, 0.63f, .5f);
-            }
-        }
-
-        //parry when q is pressed
-        if (Input.GetKeyDown(KeyCode.Q) && parryCoolDown <= 0)
-        {
-            parryCoolDown = parryCoolDownMax;
-            parryTimer = parryTimerMax;
-        }
-
         //shoot when w is pressed
-        if (Input.GetKeyDown(KeyCode.W) && ammoCount >= 5)
+        if (Input.GetKeyDown(KeyCode.W) && ammoCount >= 1)
         {
-            ammoCount -= 5;
-            ammoText.text = string.Format("ammo: {0} {1}", ammoCount.ToString(), ammoCount >= 5 ? " <color=#00ff00ff>ready</color>" : "");
+            ammoCount--;
+            ammoText.text = ammoCount.ToString();
             projectile newBullet = Instantiate(playerBullet, transform.position, Quaternion.identity).GetComponent<projectile>();
             newBullet.speed = bulletSpeed;
             newBullet.speedCap = bulletSpeed;
@@ -90,6 +70,12 @@ public class player : MonoBehaviour
             newBullet.direction = Vector2.right;
 
             playerAnimator.SetTrigger("shoot");
+        }
+
+        //count down invincibility time
+        if (invincibilityTime > 0)
+        {
+            invincibilityTime -= Time.deltaTime;
         }
     }
 
@@ -129,40 +115,40 @@ public class player : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //check for collision with enemy bullets
-        if (collision.tag == "enemyBullet")
+        if (collision != null && collision.tag == "enemyBullet" && invincibilityTime <= 0)
         {
-            //if parryTimer > 0 then the parry was successful
-            if (parryTimer > 0)
+            currentHealth -= 2;
+            if (currentHealth <= 0)
             {
-                //Debug.Log("bullet parried");
-
-                ammoCount++;
-                ammoText.text = string.Format("ammo: {0} {1}", ammoCount.ToString(), ammoCount >= 5 ? " <color=#33ff33>ready</color>" : "");
-
-                Destroy(collision.gameObject); //commented out for testing
+                isAlive = false;
             }
-            //else player gets hit
-            else
-            {
-                //Debug.Log("bullet hit");
 
-                currentHealth -= 2;
-                if (currentHealth <= 0)
-                {
-                    isAlive = false;
-                }
+            UpdateBarSize(healthBarImage, healthBarMaxWidth, currentHealth / maxHealth);
 
-                UpdateHealthBar();
+            Destroy(collision.gameObject);
 
-                Destroy(collision.gameObject); //commented out for testing
-            }
+            invincibilityTime = invincibilityTimeMax;
         }
     }
 
-    //update healthbar ui
-    private void UpdateHealthBar()
+    //update ui bar
+    private void UpdateBarSize(Image image, float imageMaxWidth, float percent)
     {
-        healthBarImage.rectTransform.sizeDelta = new Vector2(currentHealth / maxHealth * healthBarMaxWidth, healthBarImage.rectTransform.sizeDelta.y);
+        image.rectTransform.sizeDelta = new Vector2(percent * imageMaxWidth, image.rectTransform.sizeDelta.y);
+    }
+
+    //do everything that has to happen after a successful parry occurs
+    public void Parried()
+    {
+        ammoChargePercent += .2f;
+        if (ammoChargePercent >= 1)
+        {
+            ammoCount++;
+            ammoText.text = ammoCount.ToString();
+            ammoChargePercent = 0;
+        }
+
+        UpdateBarSize(ammoChargeBarImage, ammoChargeBarMaxWidth, ammoChargePercent);
     }
 
     //property for if the player is alive
