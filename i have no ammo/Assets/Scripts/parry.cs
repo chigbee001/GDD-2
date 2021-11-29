@@ -5,9 +5,9 @@ using UnityEngine;
 public class parry : MonoBehaviour
 {
     private float parryTimer = 0;
-    private const float parryTimerMax = .3f;
+    private float parryTimerMax = .3f;
     private float parryCoolDown = 0;
-    private const float parryCoolDownMax = .5f;
+    private float parryCoolDownMax = .5f;
     private SpriteRenderer hitboxIndicator;
     public player playerScript;
 
@@ -59,5 +59,19 @@ public class parry : MonoBehaviour
             playerScript.Parried();
             Destroy(collision.gameObject);
         }
+    }
+
+    //property for active time of parry
+    public float ActiveTime
+    {
+        get { return parryTimerMax; }
+        set { parryTimerMax = value; }
+    }
+
+    //property for cooldown of parry, cooldown time includes active time
+    public float CooldownTime
+    {
+        get { return parryCoolDownMax; }
+        set { parryCoolDownMax = value; }
     }
 }
