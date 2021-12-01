@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -9,16 +10,21 @@ public class GameManager : MonoBehaviour
     public bool paused;
     public GameObject pauseScreen;
     public GameObject loseScreen;
+    public GameObject coreScreen;
     public GameObject player;
+
     // Start is called before the first frame update
     void Start()
     {
-        Time.timeScale = 1;
+        Time.timeScale = 0;
+        coreScreen.SetActive(true);
+
     }
 
     // Update is called once per frame
     void Update()
     {
+
         if (Input.GetKeyDown(KeyCode.Escape) && !loseScreen.activeInHierarchy)
         {
             Pause();
@@ -29,6 +35,8 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 0;
             loseScreen.SetActive(true);
         }
+
+
     }
 
     /// <summary>
@@ -62,6 +70,29 @@ public class GameManager : MonoBehaviour
         // Need multiple scenes b4 I change this
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
+    }
+    /// <summary>
+    /// Sets the core and unpauses the game
+    /// </summary>
+    public void SetCore(string coreString)
+    {
+        PlayerCore core = (PlayerCore)System.Enum.Parse(typeof(PlayerCore), coreString);
+        player.GetComponent<player>().SetCore(core);
+        Debug.Log(player.GetComponent<player>().ShootType);
+        Time.timeScale = 1;
+        coreScreen.SetActive(false);
+    }
+
+    public void Tooltip(GameObject button)
+    {
+        if (!button.transform.GetChild(1).gameObject.activeInHierarchy)
+        {
+            button.transform.GetChild(1).gameObject.SetActive(true);
+        }
+        else
+        {
+            button.transform.GetChild(1).gameObject.SetActive(false);
+        }
     }
     /// <summary>
     /// Returns if game is paused

@@ -642,4 +642,9 @@ public class player : MonoBehaviour
             Destroy(proj.gameObject);
         }
     }
+
+    public PlayerCore ShootType
+    {
+        get { return shootType; }
+    }
 }
