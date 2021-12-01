@@ -10,6 +10,8 @@ public class parry : MonoBehaviour
     private float parryCoolDownMax = .5f;
     private SpriteRenderer hitboxIndicator;
     public player playerScript;
+    private bool autoParryOn = false;
+    private bool deflectBullet = false;
 
     // Start is called before the first frame update
     void Start()
@@ -53,11 +55,48 @@ public class parry : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //if parryTimer > 0 then the parry was successful
-        if (collision != null && collision.tag == "enemyBullet" && parryTimer > 0)
+        //check if its something that can be parried
+        if (collision != null && collision.tag == "enemyBullet")
         {
-            playerScript.Parried();
-            Destroy(collision.gameObject);
+            bool parried = false;
+
+            //if player didnt parry and can auto parry, auto parry
+            if (parryTimer <= 0 && autoParryOn && parryCoolDown <= 0)
+            {
+                parryCoolDown = parryCoolDownMax * 4;
+                parryTimer = parryTimerMax;
+
+                hitboxIndicator.color = new Color(.4f, 0.06f, 0.23f, .5f);
+
+                parried = true;
+            }
+            //if parryTimer > 0 then the parry was successful
+            else if (parryTimer > 0)
+            {
+                parried = true;
+            }
+
+            if(parried)
+            {
+                playerScript.Parried();
+
+                if(deflectBullet)
+                {
+                    projectile bullet = collision.GetComponent<projectile>();
+                    bullet.tag = "playerBullet";
+                    bullet.direction = Vector3.right;
+                    bullet.speed = 8;
+                    bullet.speedCap = bullet.speed;
+                    bullet.speedFloor = bullet.speed;
+                    bullet.acceleration = 0;
+                    bullet.rotationAcceleration = 0;
+                    bullet. behavior = null;
+                }
+                else
+                {
+                    Destroy(collision.gameObject);
+                }
+            }
         }
     }
 
@@ -73,5 +112,19 @@ public class parry : MonoBehaviour
     {
         get { return parryCoolDownMax; }
         set { parryCoolDownMax = value; }
+    }
+
+    //property for autoparry
+    public bool AutoParryOn
+    {
+        get { return autoParryOn; }
+        set { autoParryOn = value; }
+    }
+
+    //property for deflectbullet
+    public bool DeflectBulletOn
+    {
+        get { return deflectBullet; }
+        set { deflectBullet = value; }
     }
 }

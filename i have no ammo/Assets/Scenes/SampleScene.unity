@@ -1266,6 +1266,8 @@ MonoBehaviour:
   healthBarImage: {fileID: 961062699}
   healthBarBackgroundImage: {fileID: 1449168534}
   playerAnimator: {fileID: 1375861392}
+  shootType: 0
+  grenadeExplosion: {fileID: 2737971176240590092, guid: 913422daa5a10504a93d85f95984fb81, type: 3}
 --- !u!95 &1375861392
 Animator:
   serializedVersion: 3
@@ -1838,9 +1840,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1802710956}
   - component: {fileID: 1802710957}
-  - component: {fileID: 1802710958}
   - component: {fileID: 1802710960}
   - component: {fileID: 1802710959}
+  - component: {fileID: 1802710958}
   m_Layer: 0
   m_Name: parry
   m_TagString: Untagged
