@@ -16,6 +16,8 @@ public class projectile : MonoBehaviour
     public float rotationSpeedCap;
     public float rotationAcceleration;
     public Vector2 direction = Vector2.right;
+    public float lifetime = 5;
+    private float lifetimeCounter;
     public ProjectileBehavior behavior;
     
 
@@ -23,11 +25,19 @@ public class projectile : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        lifetimeCounter = lifetime;
     }
 
     // Update is called once per frame
     void Update()
     {
+        lifetimeCounter -= Time.deltaTime;
+
+        if (lifetimeCounter <= 0)
+        {
+            Destroy(gameObject);
+        }
+
         if (behavior != null)
         {
             behavior(this);

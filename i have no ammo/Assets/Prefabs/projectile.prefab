@@ -122,6 +122,7 @@ MonoBehaviour:
   rotationSpeedCap: 0
   rotationAcceleration: 0
   direction: {x: 1, y: 0}
+  lifetime: 5
 --- !u!50 &6568951217103779200
 Rigidbody2D:
   serializedVersion: 4
