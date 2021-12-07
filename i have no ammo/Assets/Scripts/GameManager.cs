@@ -12,13 +12,14 @@ public class GameManager : MonoBehaviour
     public GameObject loseScreen;
     public GameObject coreScreen;
     public GameObject player;
+    public GameObject boss;
 
     // Start is called before the first frame update
     void Start()
     {
         Time.timeScale = 0;
         coreScreen.SetActive(true);
-
+        boss.SetActive(false);
     }
 
     // Update is called once per frame
@@ -81,6 +82,7 @@ public class GameManager : MonoBehaviour
         Debug.Log(player.GetComponent<player>().ShootType);
         Time.timeScale = 1;
         coreScreen.SetActive(false);
+        boss.SetActive(true);
     }
 
     public void Tooltip(GameObject button)

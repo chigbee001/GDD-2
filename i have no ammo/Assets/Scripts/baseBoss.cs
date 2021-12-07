@@ -2,49 +2,83 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class baseBoss : MonoBehaviour
+public class    baseBoss : MonoBehaviour
 {
     Rigidbody2D rb;
 
+    public int totalPhases;
+    private int currentPhase;
     
-    public GameObject[] projectileSpawners;
+    //public GameObject[] projectileSpawners;
 
     [SerializeField]
     float speed;
 
     [SerializeField]
     Vector2 direction = Vector2.up;
-
     [SerializeField]
-    projectile projectilePrefab;
+    public phaseSpawners[] phaseSpawners;
+    //[SerializeField]
+    //projectile projectilePrefab;
 
     [SerializeField]
     float maxHealth;
+    float phaseHealth;
     public float currentHealth;
     public int fireRate;
     private float fireCooldown;
     private bool holdFire;
+    private bool phaseSpawnersActive;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        totalPhases = phaseSpawners.Length;
+        currentPhase = 0;
+        currentHealth = maxHealth;
+        phaseHealth = maxHealth;
+        phaseSpawnersActive = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        BasicMovement();
-        if(fireCooldown <= 0 && !holdFire)
-        {
-            holdFire = true;
-            StartCoroutine(Fire());
-            fireCooldown = fireRate;
-        }
-        else
-        {
-            fireCooldown -= Time.deltaTime;
-        }
         if (currentHealth <= 0) { Die(); }
+        BasicMovement();
+        //depreciated loop
+        //if(fireCooldown <= 0 && !holdFire)
+        //{
+        //    holdFire = true;
+        //    StartCoroutine(Fire());
+        //    fireCooldown = fireRate;
+        //}
+        //else
+        //{
+        //    fireCooldown -= Time.deltaTime;
+        //}
+        if(!phaseSpawnersActive)
+        {
+            foreach(projectileSpawner p in phaseSpawners[currentPhase].projectileSpawners)
+            {
+                p.turnedOn = true;
+            }
+            phaseSpawnersActive = true;
+        }
+        if(currentHealth < phaseHealth - (maxHealth / totalPhases))
+        {
+            phaseHealth = currentHealth;
+            foreach (projectileSpawner p in phaseSpawners[currentPhase].projectileSpawners)
+            {
+                p.turnedOn = false;
+            }
+            currentPhase++;
+            phaseSpawnersActive = false;
+        }
+
+
+
+
+        
     }
 
     void BasicMovement()
@@ -58,7 +92,7 @@ public class baseBoss : MonoBehaviour
     void Die()
     {
         Debug.Log(name + " has been killed");
-
+        gameObject.SetActive(false);
         // TEMPORARY, JUST TO NOTE THAT THEY WOULD'VE DIED BUT RESETTING THEIR HEALTH SO IT DOESN'T SPAM THE MESSAGE EVERY FRAME
         currentHealth = maxHealth;
     }
@@ -67,22 +101,22 @@ public class baseBoss : MonoBehaviour
     /// and what pattern for the bullets from each mount
     /// Currently just fires sine wave bullets from two mounts
     /// </summary>
-    IEnumerator Fire()
-    {
-        //will go through each spawner group and only fire from the ones called for currently will just run through all and fire from all
-        //foreach(GameObject[] spawnerGroup in projectileSpawners)
-        //{
-            //foreach(GameObject spawner in spawnerGroup)
-            foreach(GameObject spawner in projectileSpawners)
-            {
-                //while loop will use number of bullets variable from attack pattern to determine how many to fire currently will fire 10
-                for(int i = 0; i < 10; i++)
-                {
-                Instantiate(projectilePrefab, spawner.transform.position, spawner.transform.rotation);
-                yield return new WaitForSeconds(.5f);
-                }
-            }
-        holdFire = false;
-        //}
-    }
+    //IEnumerator Fire()
+    //{
+    //    //will go through each spawner group and only fire from the ones called for currently will just run through all and fire from all
+    //    //foreach(GameObject[] spawnerGroup in projectileSpawners)
+    //    //{
+    //        //foreach(GameObject spawner in spawnerGroup)
+    //        foreach(GameObject spawner in projectileSpawners)
+    //        {
+    //            //while loop will use number of bullets variable from attack pattern to determine how many to fire currently will fire 10
+    //            for(int i = 0; i < 10; i++)
+    //            {
+    //            Instantiate(projectilePrefab, spawner.transform.position, spawner.transform.rotation);
+    //            yield return new WaitForSeconds(.5f);
+    //            }
+    //        }
+    //    holdFire = false;
+    //    //}
+    //}
 }
