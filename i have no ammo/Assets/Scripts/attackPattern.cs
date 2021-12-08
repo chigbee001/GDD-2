@@ -5,6 +5,7 @@ using UnityEngine;
 public class attackPattern : MonoBehaviour
 {
     public projectile[] projectiles;
+    public float initialDelay;
     public int timesTofireLoop;
     private int timesFired;
     public int timeToCooldown;
@@ -24,6 +25,13 @@ public class attackPattern : MonoBehaviour
     {
         Debug.Log("Fire reached");
         timesFired = 0;
+
+        if (initialDelay != 0)
+        {
+            Debug.Log(name + " --- Delaying for " + initialDelay + " seconds");
+            yield return new WaitForSeconds(initialDelay);
+        }
+
         //fires the projectile spread if shotgun then all at once if rifle then individually with rifle delay
         while (timesFired < timesTofireLoop)
         {

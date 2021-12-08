@@ -134,13 +134,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be636c4ea971c0b47887312a48c459fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 3
   speedFloor: 0
-  speedCap: 1
+  speedCap: 2
   acceleration: 0
   rotationSpeed: 0
   rotationSpeedFloor: 0
   rotationSpeedCap: 0
   rotationAcceleration: 0
-  direction: {x: -1, y: 0}
-  lifetime: 6
+  direction: {x: -1, y: 2}
+  lifetime: 7

@@ -5,7 +5,7 @@ using UnityEngine;
 public class projectileSpawner : MonoBehaviour
 {
     public bool inUse;
-    public attackPattern[] attackPatterns;
+    public AttackPatternList[] attackPatterns;
     public bool turnedOn;
 
     private void Start()
@@ -22,11 +22,19 @@ public class projectileSpawner : MonoBehaviour
             int rand;
             //pick random attack pattern and use it
             inUse = true;
-            rand = Random.Range(0, attackPatterns.Length - 1);
-            StartCoroutine(attackPatterns[0].Fire());
-            
+            rand = Random.Range(0, attackPatterns.Length);
+
+            for (int i = 0; i < attackPatterns[rand].arr.Length; i++)
+            {
+                attackPatterns[rand].arr[i].StopAllCoroutines();
+                StartCoroutine(attackPatterns[rand].arr[i].Fire());
+            }
         }
-
     }
+}
 
+[System.Serializable]
+public class AttackPatternList
+{
+    public attackPattern[] arr;
 }

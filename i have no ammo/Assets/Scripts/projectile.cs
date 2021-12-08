@@ -48,7 +48,7 @@ public class projectile : MonoBehaviour
         rotationSpeed += rotationAcceleration * Time.deltaTime;
         rotationSpeed = Mathf.Clamp(rotationSpeed, rotationSpeedFloor, rotationSpeedCap);
 
-        direction = Quaternion.Euler(0, 0, rotationAcceleration * Time.deltaTime) * direction;
+        direction = (Quaternion.Euler(0, 0, rotationAcceleration * Time.deltaTime) * direction).normalized;
         transform.rotation = Quaternion.LookRotation(Vector3.forward, direction);
 
         rb.velocity = speed * direction;
