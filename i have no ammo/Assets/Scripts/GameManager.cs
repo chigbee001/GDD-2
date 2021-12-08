@@ -14,12 +14,18 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     public GameObject boss;
 
+    //tutorial variables
+    public Transform tutorialParent;
+    private int currentTutorialScreen;
+
     // Start is called before the first frame update
     void Start()
     {
         Time.timeScale = 0;
         coreScreen.SetActive(true);
         boss.SetActive(false);
+        currentTutorialScreen = 0;
+        paused = true;
     }
 
     // Update is called once per frame
@@ -37,7 +43,10 @@ public class GameManager : MonoBehaviour
             loseScreen.SetActive(true);
         }
 
-
+        if (currentTutorialScreen < 5 && Input.anyKeyDown)
+        {
+            ProgressTutorial();
+        }
     }
 
     /// <summary>
@@ -83,6 +92,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         coreScreen.SetActive(false);
         boss.SetActive(true);
+        paused = false;
     }
 
     public void Tooltip(GameObject button)
@@ -102,5 +112,21 @@ public class GameManager : MonoBehaviour
     public bool IsPaused
     {
         get { return paused; }
+    }
+
+    //progress tutorial to next tutorial screen
+    private void ProgressTutorial()
+    {
+        if (currentTutorialScreen >= tutorialParent.childCount - 1)
+        {
+            tutorialParent.gameObject.SetActive(false);
+        }
+        else
+        {
+            currentTutorialScreen++;
+
+            tutorialParent.GetChild(currentTutorialScreen).gameObject.SetActive(true);
+            tutorialParent.GetChild(currentTutorialScreen - 1).gameObject.SetActive(false);
+        }
     }
 }

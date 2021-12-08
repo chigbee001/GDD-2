@@ -13,15 +13,24 @@ public class parry : MonoBehaviour
     private bool autoParryOn = false;
     private bool deflectBullet = false;
 
+    private GameManager gamemanager;
+
     // Start is called before the first frame update
     void Start()
     {
+        gamemanager = FindObjectOfType<GameManager>();
+
         hitboxIndicator = gameObject.GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (gamemanager.paused)
+        {
+            return;
+        }
+
         //parry timing
         if (parryTimer > 0)
         {
@@ -53,7 +62,7 @@ public class parry : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         //check if its something that can be parried
         if (collision != null && collision.tag == "enemyBullet")

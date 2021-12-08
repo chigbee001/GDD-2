@@ -20,7 +20,7 @@ public enum PlayerCore
     Cloud,     //-(easy option) block a hit, refreshes when you gain ammo
     Plague,    //-(hard option) lose health over time, parry to gain health, can go over max health. parry doesnt give charge, gain charge by taking damage. (the idea is that this lets you shoot far more often but you also have more to manage)
     War,       //-(hard option) you take double damage, your parry window is .2, parry also deflects bullets straight ahead, deflected bullets deal 50% of your bullet damage
-    Pain       //(gio option) you have 1 health, your parry window is .1 second, good luck, dumbass. shooting instantly damages the boss and deals (.5 * bossCurrentHealth + flatDamage or .2 * bossMaxHealth or high flat amount : decide which one based on how much health bosses will have and balance it with charge amount)
+    Pain       //(gio option) you have 1 health, your parry window is .1 second, good luck, dumbass. shooting instantly damages the boss and deals a lot of damage
 }
 
 public class player : MonoBehaviour
@@ -61,7 +61,7 @@ public class player : MonoBehaviour
     public Animator playerAnimator;
 
     //shoot type variables
-    public PlayerCore shootType;
+    private PlayerCore shootType;
 
     //grenade explosion object
     public GameObject grenadeExplosion;
@@ -86,9 +86,14 @@ public class player : MonoBehaviour
     //war damage multiplier
     private float warDamageMultiplier = 1;
 
+    //gamemanager
+    private GameManager gamemanager;
+
     // Start is called before the first frame update
     void Start()
     {
+        gamemanager = FindObjectOfType<GameManager>();
+
         playerRigidbody = gameObject.GetComponent<Rigidbody2D>();
 
         ammoChargePercent = 0;
@@ -108,6 +113,11 @@ public class player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (gamemanager.paused)
+        {
+            return;
+        }
+
         //shoot when w is pressed
         if (Input.GetKeyDown(KeyCode.W) && ammoCount >= 1)
         {
@@ -299,6 +309,14 @@ public class player : MonoBehaviour
                 speed = energizeBaseSpeed;
                 break;
 
+            case PlayerCore.Devour:
+                newBullet = Instantiate(playerBullet, transform.position, Quaternion.identity).GetComponent<projectile>();
+                newBullet.direction = Vector3.right;
+                newBullet.speed = bulletSpeed;
+                newBullet.speedCap = bulletSpeedCap;
+                newBullet.speedFloor = bulletSpeedFloor;
+                break;
+
             case PlayerCore.Quantum:
                 newBullet = Instantiate(playerBullet, transform.position, Quaternion.identity).GetComponent<projectile>();
                 newBullet.direction = Vector3.right;
@@ -375,6 +393,10 @@ public class player : MonoBehaviour
                 newBullet.speedFloor = bulletSpeedFloor;
                 break;
 
+            case PlayerCore.Pain:
+                //deal damage directly to boss
+                break;
+
             //when everything is done remove all of the shoot types that are just this and replace this comment with the ones that are dealt with here
             default:
                 newBullet = Instantiate(playerBullet, transform.position, Quaternion.identity).GetComponent<projectile>();
@@ -400,7 +422,7 @@ public class player : MonoBehaviour
         UpdateBarSize(healthBarImage, healthBarMaxWidth, currentHealth / maxHealth);
     }
 
-    //increase charge percent by 1 over chargecost
+    //increase charge percent by 1 / chargecost
     private void IncreaseChargePercent()
     {
         ammoChargePercent += 1f / chargeCost;
@@ -408,6 +430,11 @@ public class player : MonoBehaviour
         if (shootType == PlayerCore.Energize && speed < energizeMaxSpeed)
         {
             speed += energizeSpeedUp;
+        }
+        else if (ShootType == PlayerCore.Devour && ammoCount > 5)
+        {
+            TakeDamage(1);
+            //deal damage directly to boss
         }
 
         if (ammoChargePercent >= 1)
@@ -457,6 +484,7 @@ public class player : MonoBehaviour
                 attackDamage = 5;
                 bulletSpeedCap = bulletSpeed;
                 bulletSpeedFloor = bulletSpeed;
+                SetMaxHealth(10);
                 break;
 
             case PlayerCore.Shotgun:
@@ -502,6 +530,16 @@ public class player : MonoBehaviour
                 bulletSpeedCap = bulletSpeed;
                 bulletSpeedFloor = bulletSpeed;
                 energizeBaseSpeed = speed;
+                SetMaxHealth(10);
+                break;
+
+            case PlayerCore.Devour:
+                chargeCost = 2;
+                bulletSpeed = 7;
+                attackDamage = 5;
+                bulletSpeedCap = bulletSpeed;
+                bulletSpeedFloor = bulletSpeed;
+                SetMaxHealth(14);
                 break;
 
             case PlayerCore.Quantum:
@@ -573,16 +611,16 @@ public class player : MonoBehaviour
                 parry.CooldownTime = .3f;
                 break;
 
-            //case PlayerCore.Pain:
-                //chargeCost = 5;
-                //bulletSpeed = 0;
-                //attackDamage = 20;
-                //bulletSpeedCap = bulletSpeed;
-                //bulletSpeedFloor = bulletSpeed;
-                //SetMaxHealth(1);
-                //parry.ActiveTime = .1f;
-                //parry.CooldownTime = .25f;
-                //break;
+            case PlayerCore.Pain:
+                chargeCost = 5;
+                bulletSpeed = 0;
+                attackDamage = 20;
+                bulletSpeedCap = bulletSpeed;
+                bulletSpeedFloor = bulletSpeed;
+                SetMaxHealth(1);
+                parry.ActiveTime = .1f;
+                parry.CooldownTime = .25f;
+                break;
 
             default:
                 shootType = PlayerCore.Basic;
@@ -643,6 +681,9 @@ public class player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// get property for player's current shoot type
+    /// </summary>
     public PlayerCore ShootType
     {
         get { return shootType; }
