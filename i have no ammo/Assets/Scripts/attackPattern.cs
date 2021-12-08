@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class attackPattern : MonoBehaviour
 {
+    public player player;
+    public projectileSpawner projectileSpawner;
     public projectile[] projectiles;
     public float initialDelay;
     public int timesTofireLoop;
     private int timesFired;
-    public int timeToCooldown;
+    public float timeToCooldown;
     public float shotGroupingDelay;
     public Vector2[] directionsOfFire;
+    public bool targeted; // If it's targeted, the "direction" of the shot will instead be an offset from the direction of the player
     public bool shotgunFire;
     public bool rifleFire;
     public float rifleDelay;
@@ -28,7 +31,6 @@ public class attackPattern : MonoBehaviour
 
         if (initialDelay != 0)
         {
-            Debug.Log(name + " --- Delaying for " + initialDelay + " seconds");
             yield return new WaitForSeconds(initialDelay);
         }
 
@@ -57,7 +59,19 @@ public class attackPattern : MonoBehaviour
     {
         for(int i = 0; i < projectiles.Length; i++)
         {
-            projectiles[i].direction = directionsOfFire[i];
+            if (targeted)
+            {
+                Vector2 toPlayer = player.transform.position - transform.position;
+
+                float angle = Mathf.Atan2(directionsOfFire[i].normalized.y, directionsOfFire[i].normalized.x);
+
+                projectiles[i].direction = Quaternion.AngleAxis(angle, Vector3.forward) * toPlayer;
+            }
+            else
+            {
+                projectiles[i].direction = directionsOfFire[i];
+            }
+
             Instantiate(projectiles[i], this.transform.position, this.transform.rotation);
             yield return new WaitForSeconds(rifleDelay);
         }
@@ -70,7 +84,19 @@ public class attackPattern : MonoBehaviour
     {
         for (int i = 0; i < projectiles.Length; i++)
         {
-            projectiles[i].direction = directionsOfFire[i];
+            if (targeted)
+            {
+                Vector2 toPlayer = player.transform.position - transform.position;
+
+                float angle = Mathf.Atan2(directionsOfFire[i].normalized.y, directionsOfFire[i].normalized.x);
+
+                projectiles[i].direction = Quaternion.AngleAxis(angle, Vector3.forward) * toPlayer;
+            }
+            else
+            {
+                projectiles[i].direction = directionsOfFire[i];
+            }
+
             Instantiate(projectiles[i], this.transform.position, this.transform.rotation);
         }
         continueFire = true;
@@ -80,6 +106,6 @@ public class attackPattern : MonoBehaviour
     private IEnumerator EnterCooldown()
     {
         yield return new WaitForSeconds(timeToCooldown);
-        this.GetComponentInParent<projectileSpawner>().inUse = false;
+        projectileSpawner.inUse = false;
     }
 }

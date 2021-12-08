@@ -23,10 +23,17 @@ public class projectileSpawner : MonoBehaviour
             //pick random attack pattern and use it
             inUse = true;
             rand = Random.Range(0, attackPatterns.Length);
+            
+            for (int i = 0; i < attackPatterns.Length; i++)
+            {
+                for (int j = 0; j < attackPatterns[i].arr.Length; j++)
+                {
+                    attackPatterns[i].arr[j].StopAllCoroutines();
+                }
+            }
 
             for (int i = 0; i < attackPatterns[rand].arr.Length; i++)
             {
-                attackPatterns[rand].arr[i].StopAllCoroutines();
                 StartCoroutine(attackPatterns[rand].arr[i].Fire());
             }
         }
