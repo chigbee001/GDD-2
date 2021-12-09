@@ -23,7 +23,6 @@ public class    baseBoss : MonoBehaviour
 
     [SerializeField]
     float maxHealth;
-    float phaseHealth;
     public float currentHealth;
     public int fireRate;
     private float fireCooldown;
@@ -36,7 +35,6 @@ public class    baseBoss : MonoBehaviour
         totalPhases = phaseSpawners.Length;
         currentPhase = 0;
         currentHealth = maxHealth;
-        phaseHealth = maxHealth;
         phaseSpawnersActive = false;
     }
 
@@ -64,9 +62,8 @@ public class    baseBoss : MonoBehaviour
             }
             phaseSpawnersActive = true;
         }
-        if(currentHealth < phaseHealth - (maxHealth / totalPhases))
+        if(currentHealth < maxHealth - (maxHealth / totalPhases) * (currentPhase + 1))
         {
-            phaseHealth = currentHealth;
             foreach (projectileSpawner p in phaseSpawners[currentPhase].projectileSpawners)
             {
                 p.turnedOn = false;
