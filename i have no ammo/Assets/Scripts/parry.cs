@@ -59,6 +59,9 @@ public class parry : MonoBehaviour
             parryTimer = parryTimerMax;
 
             hitboxIndicator.color = new Color(.4f, 0.06f, 0.23f, .5f);
+
+            playerScript.PlayerAnimator.ResetTrigger("shoot");
+            playerScript.playerAnimator.SetTrigger("parry");
         }
     }
 

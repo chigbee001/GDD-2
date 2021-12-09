@@ -32,35 +32,41 @@ public class hideui : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //lower opacity of images
-        for(int i = 0; i < uiImages.Count; i++)
+        if (collision.tag == "player")
         {
-            Color c = imageColors[i];
-            c.a = imageOpacity;
-            uiImages[i].color = c;
-        }
+            //lower opacity of images
+            for (int i = 0; i < uiImages.Count; i++)
+            {
+                Color c = imageColors[i];
+                c.a = imageOpacity;
+                uiImages[i].color = c;
+            }
 
-        //lower opacity of text
-        for (int i = 0; i < uiText.Count; i++)
-        {
-            Color c = textColors[i];
-            c.a = imageOpacity;
-            uiText[i].color = c;
+            //lower opacity of text
+            for (int i = 0; i < uiText.Count; i++)
+            {
+                Color c = textColors[i];
+                c.a = imageOpacity;
+                uiText[i].color = c;
+            }
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        //make image colors go back to normal
-        for (int i = 0; i < uiImages.Count; i++)
+        if (collision.tag == "player")
         {
-            uiImages[i].color = imageColors[i];
-        }
+            //make image colors go back to normal
+            for (int i = 0; i < uiImages.Count; i++)
+            {
+                uiImages[i].color = imageColors[i];
+            }
 
-        //make text colors go back to normal
-        for (int i = 0; i < uiText.Count; i++)
-        {
-            uiText[i].color = textColors[i];
+            //make text colors go back to normal
+            for (int i = 0; i < uiText.Count; i++)
+            {
+                uiText[i].color = textColors[i];
+            }
         }
     }
 }

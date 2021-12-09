@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
         if (!player.GetComponent<player>().IsAlive)
         {
             Time.timeScale = 0;
+            paused = true;
             loseScreen.SetActive(true);
         }
 

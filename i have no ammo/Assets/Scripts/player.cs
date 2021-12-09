@@ -55,7 +55,7 @@ public class player : MonoBehaviour
     private float currentHealth;
     private bool isAlive;
     private float invincibilityTime = 0;
-    private const float invincibilityTimeMax = .25f;
+    private const float invincibilityTimeMax = 1;
 
     //animation
     public Animator playerAnimator;
@@ -86,8 +86,16 @@ public class player : MonoBehaviour
     //war damage multiplier
     private float warDamageMultiplier = 1;
 
+    //cloud block indicator color
+    private Color cloudBlockIndication = new Color(1f, 1f, .25f);
+
     //gamemanager
     private GameManager gamemanager;
+
+    //shot sprites 0 = basic, 1 = missile, 2 = remote, 3 = grenade, 4 = grenade explosion
+    public List<Sprite> shotSprites = new List<Sprite>();
+
+    private SpriteRenderer playerSprite;
 
     // Start is called before the first frame update
     void Start()
@@ -95,6 +103,7 @@ public class player : MonoBehaviour
         gamemanager = FindObjectOfType<GameManager>();
 
         playerRigidbody = gameObject.GetComponent<Rigidbody2D>();
+        playerSprite = gameObject.GetComponent<SpriteRenderer>();
 
         ammoChargePercent = 0;
         ammoCount = 0;
@@ -106,7 +115,7 @@ public class player : MonoBehaviour
         isAlive = true;
 
         parry = transform.GetChild(0).GetComponent<parry>();
-
+        
         SetCore(shootType);
     }
 
@@ -128,6 +137,21 @@ public class player : MonoBehaviour
         if (invincibilityTime > 0)
         {
             invincibilityTime -= Time.deltaTime;
+
+            //flicker (code stolen from dan)
+            if (invincibilityTime % 0.16f > 0.08f)
+            {
+                playerSprite.color = new Color(1, 1, 1, 1);
+            }
+            else
+            {
+                playerSprite.color = new Color(1, 1, 1, .5f);
+            }
+
+            if (invincibilityTime <= 0)
+            {
+                playerSprite.color = new Color(1, 1, 1, 1);
+            }
         }
 
         //deal damage from plague core
@@ -186,7 +210,9 @@ public class player : MonoBehaviour
             if (cloudBlockHit)
             {
                 cloudBlockHit = false;
+                playerSprite.color = Color.white;
                 Destroy(collision.gameObject);
+                invincibilityTime = invincibilityTimeMax;
             }
             else
             {
@@ -270,12 +296,13 @@ public class player : MonoBehaviour
 
             case PlayerCore.Missile:
                 newBullet = Instantiate(playerBullet, transform.position + Vector3.right * .5f, Quaternion.identity).GetComponent<projectile>();
-                newBullet.direction = playerRigidbody.velocity.normalized;
+                newBullet.direction = Vector3.right;
                 newBullet.speed = bulletSpeed;
                 newBullet.speedCap = bulletSpeedCap;
                 newBullet.speedFloor = bulletSpeedFloor;
                 newBullet.acceleration = -5;
                 newBullet.behavior = MissileMovement;
+                //newBullet.GetComponent<SpriteRenderer>().sprite = shotSprites[1];
                 break;
 
             case PlayerCore.Remote:
@@ -285,11 +312,12 @@ public class player : MonoBehaviour
                 newBullet.speedCap = bulletSpeedCap;
                 newBullet.speedFloor = bulletSpeedFloor;
                 newBullet.behavior = RemoteMovement;
+                newBullet.GetComponent<SpriteRenderer>().sprite = shotSprites[2];
                 break;
 
             case PlayerCore.Grenade:
                 newBullet = Instantiate(playerBullet, transform.position, Quaternion.identity).GetComponent<projectile>();
-                newBullet.direction = Vector3.right;
+                newBullet.direction = playerRigidbody.velocity;
                 newBullet.speed = bulletSpeed;
                 newBullet.speedCap = bulletSpeedCap;
                 newBullet.speedFloor = bulletSpeedFloor;
@@ -298,6 +326,7 @@ public class player : MonoBehaviour
                 newBullet.rotationSpeedCap = 5;
                 newBullet.rotationSpeedFloor = 0;
                 newBullet.behavior = GrenadeBehavior;
+                newBullet.GetComponent<SpriteRenderer>().sprite = shotSprites[3];
                 break;
 
             case PlayerCore.Energize:
@@ -407,6 +436,7 @@ public class player : MonoBehaviour
                 break;
         }
 
+        playerAnimator.ResetTrigger("parry");
         playerAnimator.SetTrigger("shoot");
     }
 
@@ -431,7 +461,7 @@ public class player : MonoBehaviour
         {
             speed += energizeSpeedUp;
         }
-        else if (ShootType == PlayerCore.Devour && ammoCount > 5)
+        else if (shootType == PlayerCore.Devour && ammoCount > 5)
         {
             TakeDamage(1);
             //deal damage directly to boss
@@ -442,6 +472,12 @@ public class player : MonoBehaviour
             ammoCount++;
             ammoText.text = ammoCount.ToString();
             ammoChargePercent = 0;
+
+            if (shootType == PlayerCore.Cloud)
+            {
+                cloudBlockHit = true;
+                playerSprite.color = cloudBlockIndication;
+            }
         }
 
         UpdateBarSize(ammoChargeBarImage, ammoChargeBarMaxWidth, ammoChargePercent);
@@ -488,12 +524,12 @@ public class player : MonoBehaviour
                 break;
 
             case PlayerCore.Shotgun:
-                chargeCost = 3;
+                chargeCost = 6;
                 bulletSpeed = 7;
                 attackDamage = 4;
                 bulletSpeedCap = bulletSpeed;
                 bulletSpeedFloor = bulletSpeed;
-                SetMaxHealth(12);
+                SetMaxHealth(6);
                 break;
 
             case PlayerCore.Missile:
@@ -586,6 +622,7 @@ public class player : MonoBehaviour
                 bulletSpeedFloor = bulletSpeed;
                 SetMaxHealth(8);
                 cloudBlockHit = true;
+                playerSprite.color = cloudBlockIndication;
                 break;
 
             case PlayerCore.Plague:
@@ -667,6 +704,7 @@ public class player : MonoBehaviour
             explosion.rotationSpeedCap = explosion.rotationSpeed;
             explosion.behavior = ExplosionBehavior;
             explosion.transform.localScale = new Vector3(2, 2, 1);
+            explosion.GetComponent<SpriteRenderer>().sprite = shotSprites[4];
             Destroy(proj.gameObject);
         }
     }
@@ -687,5 +725,12 @@ public class player : MonoBehaviour
     public PlayerCore ShootType
     {
         get { return shootType; }
+    }
+
+    //so animation trigger can be set in parry when parry occurs
+    public Animator PlayerAnimator
+    {
+        get { return playerAnimator; }
+        set { playerAnimator = value; }
     }
 }
