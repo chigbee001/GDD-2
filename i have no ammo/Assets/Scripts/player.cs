@@ -97,6 +97,8 @@ public class player : MonoBehaviour
 
     private SpriteRenderer playerSprite;
 
+    public baseBoss boss;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -234,6 +236,32 @@ public class player : MonoBehaviour
                 }
             }
         }
+        else if (collision != null && collision.tag == "boss" && invincibilityTime <= 0)
+        {
+            if (cloudBlockHit)
+            {
+                cloudBlockHit = false;
+                playerSprite.color = Color.white;
+                invincibilityTime = invincibilityTimeMax;
+            }
+            else
+            {
+                currentHealth -= 2 * warDamageMultiplier;
+                if (currentHealth <= 0)
+                {
+                    isAlive = false;
+                }
+
+                UpdateBarSize(healthBarImage, healthBarMaxWidth, currentHealth / maxHealth);
+
+                invincibilityTime = invincibilityTimeMax;
+
+                if (shootType == PlayerCore.Plague)
+                {
+                    IncreaseChargePercent();
+                }
+            }
+        }
     }
 
     //update ui bar
@@ -280,6 +308,7 @@ public class player : MonoBehaviour
                 newBullet.speedCap = bulletSpeedCap;
                 newBullet.speedFloor = bulletSpeedFloor;
                 newBullet.direction = Vector2.right;
+                newBullet.damage = attackDamage;
                 break;
 
             case PlayerCore.Shotgun:
@@ -291,6 +320,7 @@ public class player : MonoBehaviour
                     newBullet.speed = bulletSpeed;
                     newBullet.speedCap = bulletSpeedCap;
                     newBullet.speedFloor = bulletSpeedFloor;
+                    newBullet.damage = attackDamage;
                 }
                 break;
 
@@ -302,7 +332,8 @@ public class player : MonoBehaviour
                 newBullet.speedFloor = bulletSpeedFloor;
                 newBullet.acceleration = -5;
                 newBullet.behavior = MissileMovement;
-                //newBullet.GetComponent<SpriteRenderer>().sprite = shotSprites[1];
+                newBullet.damage = attackDamage;
+                newBullet.GetComponent<SpriteRenderer>().sprite = shotSprites[1];
                 break;
 
             case PlayerCore.Remote:
@@ -313,6 +344,7 @@ public class player : MonoBehaviour
                 newBullet.speedFloor = bulletSpeedFloor;
                 newBullet.behavior = RemoteMovement;
                 newBullet.GetComponent<SpriteRenderer>().sprite = shotSprites[2];
+                newBullet.damage = attackDamage;
                 break;
 
             case PlayerCore.Grenade:
@@ -327,6 +359,7 @@ public class player : MonoBehaviour
                 newBullet.rotationSpeedFloor = 0;
                 newBullet.behavior = GrenadeBehavior;
                 newBullet.GetComponent<SpriteRenderer>().sprite = shotSprites[3];
+                newBullet.damage = attackDamage;
                 break;
 
             case PlayerCore.Energize:
@@ -336,6 +369,7 @@ public class player : MonoBehaviour
                 newBullet.speedCap = bulletSpeedCap;
                 newBullet.speedFloor = bulletSpeedFloor;
                 speed = energizeBaseSpeed;
+                newBullet.damage = attackDamage;
                 break;
 
             case PlayerCore.Devour:
@@ -344,6 +378,7 @@ public class player : MonoBehaviour
                 newBullet.speed = bulletSpeed;
                 newBullet.speedCap = bulletSpeedCap;
                 newBullet.speedFloor = bulletSpeedFloor;
+                newBullet.damage = attackDamage;
                 break;
 
             case PlayerCore.Quantum:
@@ -352,6 +387,7 @@ public class player : MonoBehaviour
                 newBullet.speed = bulletSpeed;
                 newBullet.speedCap = bulletSpeedCap;
                 newBullet.speedFloor = bulletSpeedFloor;
+                newBullet.damage = attackDamage;
                 break;
 
             case PlayerCore.Ballistic:
@@ -376,6 +412,7 @@ public class player : MonoBehaviour
                     newBullet.speed = bulletSpeed;
                     newBullet.speedCap = bulletSpeedCap;
                     newBullet.speedFloor = bulletSpeedFloor;
+                    newBullet.damage = attackDamage;
                 }
                 break;
 
@@ -385,6 +422,7 @@ public class player : MonoBehaviour
                 newBullet.speed = bulletSpeed;
                 newBullet.speedCap = bulletSpeedCap;
                 newBullet.speedFloor = bulletSpeedFloor;
+                newBullet.damage = attackDamage;
                 break;
 
             case PlayerCore.Heart:
@@ -395,6 +433,7 @@ public class player : MonoBehaviour
                 newBullet.speedFloor = bulletSpeedFloor;
                 currentHealth += heartHeal;
                 UpdateBarSize(healthBarImage, healthBarMaxWidth, currentHealth / maxHealth);
+                newBullet.damage = attackDamage;
                 break;
 
             case PlayerCore.Cloud:
@@ -404,6 +443,7 @@ public class player : MonoBehaviour
                 newBullet.speedCap = bulletSpeedCap;
                 newBullet.speedFloor = bulletSpeedFloor;
                 cloudBlockHit = true;
+                newBullet.damage = attackDamage;
                 break;
 
             case PlayerCore.Plague:
@@ -412,6 +452,7 @@ public class player : MonoBehaviour
                 newBullet.speed = bulletSpeed;
                 newBullet.speedCap = bulletSpeedCap;
                 newBullet.speedFloor = bulletSpeedFloor;
+                newBullet.damage = attackDamage;
                 break;
 
             case PlayerCore.War:
@@ -420,10 +461,12 @@ public class player : MonoBehaviour
                 newBullet.speed = bulletSpeed;
                 newBullet.speedCap = bulletSpeedCap;
                 newBullet.speedFloor = bulletSpeedFloor;
+                newBullet.damage = attackDamage;
                 break;
 
             case PlayerCore.Pain:
                 //deal damage directly to boss
+                boss.TakeDamage(attackDamage);
                 break;
 
             //when everything is done remove all of the shoot types that are just this and replace this comment with the ones that are dealt with here
@@ -433,6 +476,7 @@ public class player : MonoBehaviour
                 newBullet.speedCap = bulletSpeedCap;
                 newBullet.speedFloor = bulletSpeedFloor;
                 newBullet.direction = Vector2.right;
+                newBullet.damage = attackDamage;
                 break;
         }
 
@@ -461,11 +505,6 @@ public class player : MonoBehaviour
         {
             speed += energizeSpeedUp;
         }
-        else if (shootType == PlayerCore.Devour && ammoCount > 5)
-        {
-            TakeDamage(1);
-            //deal damage directly to boss
-        }
 
         if (ammoChargePercent >= 1)
         {
@@ -477,6 +516,12 @@ public class player : MonoBehaviour
             {
                 cloudBlockHit = true;
                 playerSprite.color = cloudBlockIndication;
+            }
+            else if (shootType == PlayerCore.Devour && ammoCount > 5)
+            {
+                TakeDamage(1);
+                //deal damage directly to boss
+                boss.TakeDamage(attackDamage);
             }
         }
 
@@ -526,7 +571,7 @@ public class player : MonoBehaviour
             case PlayerCore.Shotgun:
                 chargeCost = 6;
                 bulletSpeed = 7;
-                attackDamage = 4;
+                attackDamage = 3;
                 bulletSpeedCap = bulletSpeed;
                 bulletSpeedFloor = bulletSpeed;
                 SetMaxHealth(6);
@@ -590,7 +635,7 @@ public class player : MonoBehaviour
             case PlayerCore.Ballistic:
                 chargeCost = 10;
                 bulletSpeed = 5;
-                attackDamage = 3;
+                attackDamage = 4;
                 bulletSpeedCap = bulletSpeed;
                 bulletSpeedFloor = bulletSpeed;
                 break;
@@ -628,7 +673,7 @@ public class player : MonoBehaviour
             case PlayerCore.Plague:
                 chargeCost = 8;
                 bulletSpeed = 10;
-                attackDamage = 2;
+                attackDamage = 3;
                 bulletSpeedCap = bulletSpeed;
                 bulletSpeedFloor = bulletSpeed;
                 SetMaxHealth(15);
@@ -705,6 +750,7 @@ public class player : MonoBehaviour
             explosion.behavior = ExplosionBehavior;
             explosion.transform.localScale = new Vector3(2, 2, 1);
             explosion.GetComponent<SpriteRenderer>().sprite = shotSprites[4];
+            explosion.damage = attackDamage * 2;
             Destroy(proj.gameObject);
         }
     }

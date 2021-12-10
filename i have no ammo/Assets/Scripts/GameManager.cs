@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public GameObject loseScreen;
     public GameObject coreScreen;
     public GameObject player;
-    public GameObject boss;
+    public baseBoss boss;
 
     //tutorial variables
     public Transform tutorialParent;
@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 0;
         coreScreen.SetActive(true);
-        boss.SetActive(false);
+        boss.gameObject.SetActive(false);
         currentTutorialScreen = 0;
         paused = true;
     }
@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
             loseScreen.SetActive(true);
         }
 
-        if (currentTutorialScreen < 5 && Input.anyKeyDown)
+        if (currentTutorialScreen < tutorialParent.childCount && Input.anyKeyDown)
         {
             ProgressTutorial();
         }
@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviour
         Debug.Log(player.GetComponent<player>().ShootType);
         Time.timeScale = 1;
         coreScreen.SetActive(false);
-        boss.SetActive(true);
+        boss.gameObject.SetActive(true);
         paused = false;
     }
 

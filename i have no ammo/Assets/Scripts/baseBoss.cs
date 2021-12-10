@@ -28,6 +28,9 @@ public class    baseBoss : MonoBehaviour
     private float fireCooldown;
     private bool holdFire;
     private bool phaseSpawnersActive;
+
+    private float showTookDamage = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,7 +44,7 @@ public class    baseBoss : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (currentHealth <= 0) { Die(); }
+        
         BasicMovement();
         //depreciated loop
         //if(fireCooldown <= 0 && !holdFire)
@@ -72,7 +75,14 @@ public class    baseBoss : MonoBehaviour
             phaseSpawnersActive = false;
         }
 
-
+        if (showTookDamage > 0)
+        {
+            showTookDamage -= Time.deltaTime;
+            if (showTookDamage <= 0)
+            {
+                gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+            }
+        }
 
 
         
@@ -91,7 +101,24 @@ public class    baseBoss : MonoBehaviour
         Debug.Log(name + " has been killed");
         gameObject.SetActive(false);
         // TEMPORARY, JUST TO NOTE THAT THEY WOULD'VE DIED BUT RESETTING THEIR HEALTH SO IT DOESN'T SPAM THE MESSAGE EVERY FRAME
-        currentHealth = maxHealth;
+        //currentHealth = maxHealth;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision != null && collision.tag == "playerBullet")
+        {
+            TakeDamage(collision.GetComponent<projectile>().damage);
+            Destroy(collision.gameObject);
+            showTookDamage = 1;
+            gameObject.GetComponent<SpriteRenderer>().color = new Color(1, .8f, .8f, 1);
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+        if (currentHealth <= 0) { Die(); }
     }
     /// <summary>
     /// Will take in variable of attack pattern which will be created in the future, using this parameter it will determine which group of mounts to fire from, how many bullets,
