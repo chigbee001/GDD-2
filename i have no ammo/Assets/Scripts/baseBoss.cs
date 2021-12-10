@@ -98,8 +98,8 @@ public class    baseBoss : MonoBehaviour
 
     void Die()
     {
-        Debug.Log(name + " has been killed");
-        gameObject.SetActive(false);
+        //Debug.Log(name + " has been killed");
+        //gameObject.SetActive(false);
         // TEMPORARY, JUST TO NOTE THAT THEY WOULD'VE DIED BUT RESETTING THEIR HEALTH SO IT DOESN'T SPAM THE MESSAGE EVERY FRAME
         //currentHealth = maxHealth;
     }
@@ -110,14 +110,15 @@ public class    baseBoss : MonoBehaviour
         {
             TakeDamage(collision.GetComponent<projectile>().damage);
             Destroy(collision.gameObject);
-            showTookDamage = 1;
-            gameObject.GetComponent<SpriteRenderer>().color = new Color(1, .8f, .8f, 1);
+
         }
     }
 
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
+        showTookDamage = 1;
+        gameObject.GetComponent<SpriteRenderer>().color = new Color(1, .8f, .8f, 1);
         if (currentHealth <= 0) { Die(); }
     }
     /// <summary>

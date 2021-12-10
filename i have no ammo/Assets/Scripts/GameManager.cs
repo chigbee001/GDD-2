@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public GameObject pauseScreen;
     public GameObject loseScreen;
     public GameObject coreScreen;
+    public GameObject winScreen;
     public GameObject player;
     public baseBoss boss;
 
@@ -47,6 +48,13 @@ public class GameManager : MonoBehaviour
         if (currentTutorialScreen < tutorialParent.childCount && Input.anyKeyDown)
         {
             ProgressTutorial();
+        }
+        
+        if(boss.currentHealth <= 0)
+        {
+            paused = true;
+            Time.timeScale = 0;
+            winScreen.SetActive(true);
         }
     }
 
